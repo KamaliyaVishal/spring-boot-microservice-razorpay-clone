@@ -1,6 +1,6 @@
 package com.merchant_service.repository;
 
-import com.razorpay.merchant.entity.Customer;
+import com.merchant_service.entity.Customer;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

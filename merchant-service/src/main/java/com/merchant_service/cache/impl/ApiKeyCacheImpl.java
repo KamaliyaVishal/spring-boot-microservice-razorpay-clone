@@ -1,7 +1,7 @@
 package com.merchant_service.cache.impl;
 
-import com.razorpay.merchant.cache.ApiKeyCache;
-import com.razorpay.merchant.cache.ApiKeyCacheEntry;
+import com.merchant_service.cache.ApiKeyCache;
+import com.merchant_service.cache.ApiKeyCacheEntry;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;

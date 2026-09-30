@@ -1,12 +1,12 @@
 package com.merchant_service.service.Impl;
 
 
-import com.razorpay.common.exception.ResourceNotFoundException;
-import com.razorpay.merchant.entity.Customer;
-import com.razorpay.merchant.entity.Merchant;
-import com.razorpay.merchant.repository.CustomerRepository;
-import com.razorpay.merchant.repository.MerchantRepository;
-import com.razorpay.merchant.service.CustomerService;
+import com.common_lib.exception.ResourceNotFoundException;
+import com.merchant_service.entity.Customer;
+import com.merchant_service.entity.Merchant;
+import com.merchant_service.repository.CustomerRepository;
+import com.merchant_service.repository.MerchantRepository;
+import com.merchant_service.service.CustomerService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

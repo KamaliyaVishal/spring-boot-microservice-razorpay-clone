@@ -1,15 +1,15 @@
 package com.merchant_service.service.Impl;
 
-import com.razorpay.common.exception.ResourceNotFoundException;
-import com.razorpay.common.util.RandomizerUtil;
-import com.razorpay.merchant.dto.request.UpdateWebhookConfigRequest;
-import com.razorpay.merchant.dto.response.WebhookConfigResponse;
-import com.razorpay.merchant.entity.Merchant;
-import com.razorpay.merchant.entity.MerchantWebhookConfig;
-import com.razorpay.merchant.mapper.GlobalMerchantMapper;
-import com.razorpay.merchant.repository.MerchantRepository;
-import com.razorpay.merchant.repository.MerchantWebhookConfigRepository;
-import com.razorpay.merchant.service.WebhookConfigService;
+import com.common_lib.exception.ResourceNotFoundException;
+import com.common_lib.util.RandomizerUtil;
+import com.merchant_service.dto.request.UpdateWebhookConfigRequest;
+import com.merchant_service.dto.response.WebhookConfigResponse;
+import com.merchant_service.entity.Merchant;
+import com.merchant_service.entity.MerchantWebhookConfig;
+import com.merchant_service.mapper.GlobalMerchantMapper;
+import com.merchant_service.repository.MerchantRepository;
+import com.merchant_service.repository.MerchantWebhookConfigRepository;
+import com.merchant_service.service.WebhookConfigService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;

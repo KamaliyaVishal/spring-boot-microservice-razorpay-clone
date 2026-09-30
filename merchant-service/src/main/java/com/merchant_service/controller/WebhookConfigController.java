@@ -1,9 +1,9 @@
 package com.merchant_service.controller;
 
-import com.razorpay.merchant.dto.request.UpdateWebhookConfigRequest;
-import com.razorpay.merchant.dto.response.WebhookConfigResponse;
-import com.razorpay.merchant.security.MerchantContext;
-import com.razorpay.merchant.service.WebhookConfigService;
+import com.common_lib.context.MerchantContext;
+import com.merchant_service.dto.request.UpdateWebhookConfigRequest;
+import com.merchant_service.dto.response.WebhookConfigResponse;
+import com.merchant_service.service.WebhookConfigService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

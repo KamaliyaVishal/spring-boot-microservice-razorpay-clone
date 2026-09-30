@@ -1,13 +1,13 @@
 package com.merchant_service.service.Impl;
 
-import com.razorpay.common.dto.SettlementBankDetails;
-import com.razorpay.common.dto.WebhookTarget;
-import com.razorpay.common.enums.MerchantStatus;
-import com.razorpay.common.exception.ResourceNotFoundException;
-import com.razorpay.merchant.api.MerchantLookupService;
-import com.razorpay.merchant.entity.Merchant;
-import com.razorpay.merchant.repository.MerchantRepository;
-import com.razorpay.merchant.repository.MerchantWebhookConfigRepository;
+import com.common_lib.dto.SettlementBankDetails;
+import com.common_lib.dto.WebhookTarget;
+import com.common_lib.enums.MerchantStatus;
+import com.common_lib.exception.ResourceNotFoundException;
+import com.merchant_service.api.MerchantLookupService;
+import com.merchant_service.entity.Merchant;
+import com.merchant_service.repository.MerchantRepository;
+import com.merchant_service.repository.MerchantWebhookConfigRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.encrypt.BytesEncryptor;

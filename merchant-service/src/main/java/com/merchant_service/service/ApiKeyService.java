@@ -1,9 +1,9 @@
 package com.merchant_service.service;
 
-import com.razorpay.merchant.dto.request.CreateApiKeyRequest;
-import com.razorpay.merchant.dto.response.ApiKeyResponse;
-import com.razorpay.merchant.dto.response.CreateApiKeyResponse;
-import com.razorpay.merchant.dto.response.DeleteResponse;
+import com.merchant_service.dto.request.CreateApiKeyRequest;
+import com.merchant_service.dto.response.ApiKeyResponse;
+import com.merchant_service.dto.response.CreateApiKeyResponse;
+import com.merchant_service.dto.response.DeleteResponse;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;

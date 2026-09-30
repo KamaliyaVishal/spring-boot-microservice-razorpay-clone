@@ -1,8 +1,8 @@
 package com.merchant_service.entity;
 
-import com.razorpay.common.entity.BaseEntity;
-import com.razorpay.common.enums.BusinessType;
-import com.razorpay.common.enums.MerchantStatus;
+import com.common_lib.entity.BaseEntity;
+import com.common_lib.enums.BusinessType;
+import com.common_lib.enums.MerchantStatus;
 import jakarta.persistence.*;
 import lombok.*;
 

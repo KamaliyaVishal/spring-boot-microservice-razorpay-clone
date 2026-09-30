@@ -1,6 +1,6 @@
 package com.merchant_service.dto.response;
 
-import com.razorpay.common.enums.Environment;
+import com.common_lib.enums.Environment;
 
 import java.time.LocalDateTime;
 

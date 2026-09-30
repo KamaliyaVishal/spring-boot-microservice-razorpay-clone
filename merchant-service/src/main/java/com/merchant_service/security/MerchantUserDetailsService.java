@@ -1,7 +1,7 @@
 package com.merchant_service.security;
 
-import com.razorpay.common.exception.ResourceNotFoundException;
-import com.razorpay.merchant.repository.AppUserRepository;
+import com.common_lib.exception.ResourceNotFoundException;
+import com.merchant_service.repository.AppUserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

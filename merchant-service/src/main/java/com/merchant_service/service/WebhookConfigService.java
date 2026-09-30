@@ -1,7 +1,8 @@
 package com.merchant_service.service;
 
-import com.razorpay.merchant.dto.request.UpdateWebhookConfigRequest;
-import com.razorpay.merchant.dto.response.WebhookConfigResponse;
+
+import com.merchant_service.dto.request.UpdateWebhookConfigRequest;
+import com.merchant_service.dto.response.WebhookConfigResponse;
 
 import java.util.List;
 import java.util.UUID;

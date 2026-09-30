@@ -1,6 +1,6 @@
 package com.merchant_service.repository;
 
-import com.razorpay.merchant.entity.MerchantWebhookConfig;
+import com.merchant_service.entity.MerchantWebhookConfig;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

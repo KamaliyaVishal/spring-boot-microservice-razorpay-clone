@@ -1,5 +1,6 @@
 package com.merchant_service.security;
 
+import com.common_lib.context.MerchantContext;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

@@ -1,6 +1,6 @@
 package com.merchant_service.dto.request;
 
-import com.razorpay.common.enums.Environment;
+import com.common_lib.enums.Environment;
 import jakarta.validation.constraints.NotNull;
 
 public record CreateApiKeyRequest(

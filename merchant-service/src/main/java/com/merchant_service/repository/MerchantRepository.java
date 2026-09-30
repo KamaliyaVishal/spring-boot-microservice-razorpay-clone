@@ -1,7 +1,7 @@
 package com.merchant_service.repository;
 
-import com.razorpay.common.enums.MerchantStatus;
-import com.razorpay.merchant.entity.Merchant;
+import com.common_lib.enums.MerchantStatus;
+import com.merchant_service.entity.Merchant;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

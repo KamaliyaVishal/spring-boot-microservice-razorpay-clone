@@ -1,6 +1,6 @@
 package com.merchant_service.security;
 
-import com.razorpay.common.idempotency.IdempotencyFilter;
+import com.common_lib.idempotency.IdempotencyFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -1,7 +1,7 @@
 package com.merchant_service.dto.response;
 
-import com.razorpay.common.enums.BusinessType;
-import com.razorpay.common.enums.MerchantStatus;
+import com.common_lib.enums.BusinessType;
+import com.common_lib.enums.MerchantStatus;
 
 import java.util.UUID;
 

@@ -1,13 +1,14 @@
 package com.merchant_service.mapper;
 
-import com.razorpay.merchant.dto.request.MerchantRequest;
-import com.razorpay.merchant.dto.response.ApiKeyResponse;
-import com.razorpay.merchant.dto.response.CreateApiKeyResponse;
-import com.razorpay.merchant.dto.response.MerchantResponse;
-import com.razorpay.merchant.dto.response.WebhookConfigResponse;
-import com.razorpay.merchant.entity.ApiKey;
-import com.razorpay.merchant.entity.Merchant;
-import com.razorpay.merchant.entity.MerchantWebhookConfig;
+
+import com.merchant_service.dto.request.MerchantRequest;
+import com.merchant_service.dto.response.ApiKeyResponse;
+import com.merchant_service.dto.response.CreateApiKeyResponse;
+import com.merchant_service.dto.response.MerchantResponse;
+import com.merchant_service.dto.response.WebhookConfigResponse;
+import com.merchant_service.entity.ApiKey;
+import com.merchant_service.entity.Merchant;
+import com.merchant_service.entity.MerchantWebhookConfig;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;
