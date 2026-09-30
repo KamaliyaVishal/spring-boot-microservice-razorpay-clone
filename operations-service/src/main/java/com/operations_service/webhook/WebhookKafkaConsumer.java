@@ -1,11 +1,10 @@
 package com.operations_service.webhook;
 
-import com.razorpay.common.dto.WebhookTarget;
-import com.razorpay.common.enums.WebhookEventStatus;
-import com.razorpay.common.util.SignerUtil;
-import com.razorpay.merchant.api.MerchantLookupService;
-import com.razorpay.operations.entity.WebhookEvent;
-import com.razorpay.operations.repository.WebhookEventRepository;
+import com.common_lib.dto.WebhookTarget;
+import com.common_lib.enums.WebhookEventStatus;
+import com.common_lib.util.SignerUtil;
+import com.operations_service.entity.WebhookEvent;
+import com.operations_service.repository.WebhookEventRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerRecord;

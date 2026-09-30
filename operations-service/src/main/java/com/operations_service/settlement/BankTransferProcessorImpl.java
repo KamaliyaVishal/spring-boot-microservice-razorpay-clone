@@ -1,8 +1,8 @@
 package com.operations_service.settlement;
 
-import com.razorpay.common.entity.Money;
-import com.razorpay.common.util.RandomizerUtil;
-import com.razorpay.operations.settlement.dto.BankTransferResult;
+import com.common_lib.entity.Money;
+import com.common_lib.util.RandomizerUtil;
+import com.operations_service.settlement.dto.BankTransferResult;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;

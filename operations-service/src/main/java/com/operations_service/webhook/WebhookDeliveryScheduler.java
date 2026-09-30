@@ -1,8 +1,8 @@
 package com.operations_service.webhook;
 
-import com.razorpay.common.enums.WebhookEventStatus;
-import com.razorpay.operations.entity.WebhookEvent;
-import com.razorpay.operations.repository.WebhookEventRepository;
+import com.common_lib.enums.WebhookEventStatus;
+import com.operations_service.entity.WebhookEvent;
+import com.operations_service.repository.WebhookEventRepository;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
 import lombok.RequiredArgsConstructor;

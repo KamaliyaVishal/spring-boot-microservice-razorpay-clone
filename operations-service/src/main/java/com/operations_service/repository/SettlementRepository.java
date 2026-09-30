@@ -1,7 +1,7 @@
 package com.operations_service.repository;
 
-import com.razorpay.common.enums.SettlementStatus;
-import com.razorpay.operations.entity.Settlement;
+import com.common_lib.enums.SettlementStatus;
+import com.operations_service.entity.Settlement;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

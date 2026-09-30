@@ -1,8 +1,8 @@
 package com.operations_service.settlement;
 
-import com.razorpay.common.enums.SettlementStatus;
-import com.razorpay.operations.entity.Settlement;
-import com.razorpay.operations.repository.SettlementRepository;
+import com.common_lib.enums.SettlementStatus;
+import com.operations_service.entity.Settlement;
+import com.operations_service.repository.SettlementRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;

@@ -1,6 +1,6 @@
 package com.operations_service.entity;
 
-import com.razorpay.common.entity.BaseEntity;
+import com.common_lib.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.JdbcTypeCode;

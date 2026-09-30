@@ -1,8 +1,7 @@
 package com.operations_service.settlement;
 
-
-import com.razorpay.common.entity.Money;
-import com.razorpay.operations.settlement.dto.BankTransferResult;
+import com.common_lib.entity.Money;
+import com.operations_service.settlement.dto.BankTransferResult;
 
 import java.util.UUID;
 

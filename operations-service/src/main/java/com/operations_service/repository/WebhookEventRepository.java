@@ -1,7 +1,7 @@
 package com.operations_service.repository;
 
-import com.razorpay.common.enums.WebhookEventStatus;
-import com.razorpay.operations.entity.WebhookEvent;
+import com.common_lib.enums.WebhookEventStatus;
+import com.operations_service.entity.WebhookEvent;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.time.LocalDateTime;

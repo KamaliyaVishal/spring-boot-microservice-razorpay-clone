@@ -1,9 +1,8 @@
 package com.operations_service.entity;
 
-
-import com.razorpay.common.entity.BaseEntity;
-import com.razorpay.common.entity.Money;
-import com.razorpay.common.enums.SettlementStatus;
+import com.common_lib.entity.BaseEntity;
+import com.common_lib.entity.Money;
+import com.common_lib.enums.SettlementStatus;
 import jakarta.persistence.*;
 import lombok.*;
 
