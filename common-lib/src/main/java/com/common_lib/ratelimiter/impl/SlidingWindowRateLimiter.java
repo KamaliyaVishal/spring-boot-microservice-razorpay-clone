@@ -1,9 +1,8 @@
 package com.common_lib.ratelimiter.impl;
 
-import com.razorpay.common.ratelimiter.RateLimitResult;
-import com.razorpay.common.ratelimiter.RateLimiter;
+import com.common_lib.ratelimiter.RateLimitResult;
+import com.common_lib.ratelimiter.RateLimiter;
 import lombok.RequiredArgsConstructor;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
 
@@ -12,7 +11,6 @@ import java.util.UUID;
 
 @Component
 @RequiredArgsConstructor
-@ConditionalOnProperty(name = "app.rate-limit.method", havingValue = "sliding")
 public class SlidingWindowRateLimiter implements RateLimiter {
 
     private final StringRedisTemplate redis;

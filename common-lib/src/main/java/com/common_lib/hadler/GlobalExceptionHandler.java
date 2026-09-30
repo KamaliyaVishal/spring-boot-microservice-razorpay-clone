@@ -1,7 +1,10 @@
 package com.common_lib.hadler;
 
-import com.razorpay.common.exception.*;
-import com.razorpay.common.exception.enums.ErrorCode;
+import com.common_lib.exception.BaseBusinessException;
+import com.common_lib.exception.BusinessRuleViolationException;
+import com.common_lib.exception.DuplicateResourceException;
+import com.common_lib.exception.RateLimitException;
+import com.common_lib.exception.enums.ErrorCode;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

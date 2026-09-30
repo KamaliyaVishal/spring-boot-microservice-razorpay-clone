@@ -1,15 +1,13 @@
 package com.common_lib.ratelimiter.impl;
 
-import com.razorpay.common.ratelimiter.RateLimitResult;
-import com.razorpay.common.ratelimiter.RateLimiter;
+import com.common_lib.ratelimiter.RateLimitResult;
+import com.common_lib.ratelimiter.RateLimiter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.script.DefaultRedisScript;
 import org.springframework.data.redis.core.script.RedisScript;
-import org.springframework.stereotype.Component;
 
 import java.util.List;
 
@@ -22,9 +20,7 @@ import java.util.List;
  * can't both read the same "tokens available" snapshot and both be allowed through.
  */
 @Slf4j
-@Component
 @RequiredArgsConstructor
-@ConditionalOnProperty(name = "app.rate-limit.method", havingValue = "bucket")
 public class TokenBucketRateLimiter implements RateLimiter {
 
     private static final RedisScript<List> SCRIPT = new DefaultRedisScript<>("""

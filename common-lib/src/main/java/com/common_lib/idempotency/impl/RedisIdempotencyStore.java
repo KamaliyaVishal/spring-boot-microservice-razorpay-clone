@@ -1,16 +1,14 @@
 package com.common_lib.idempotency.impl;
 
-import com.razorpay.common.idempotency.IdempotencyStore;
+import com.common_lib.idempotency.IdempotencyStore;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.redis.core.StringRedisTemplate;
-import org.springframework.stereotype.Component;
 
 import java.time.Duration;
 import java.util.Optional;
 
-@Component
 @Slf4j
 @RequiredArgsConstructor
 public class RedisIdempotencyStore implements IdempotencyStore {

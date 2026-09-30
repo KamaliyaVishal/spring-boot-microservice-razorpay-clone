@@ -1,13 +1,10 @@
 package com.common_lib.util;
 
-import org.springframework.stereotype.Component;
-
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 import java.nio.charset.StandardCharsets;
 import java.util.HexFormat;
 
-@Component
 public class SignerUtil {
 
     private static final String ALGO = "HmacSHA256";

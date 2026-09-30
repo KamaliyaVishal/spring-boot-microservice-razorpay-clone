@@ -1,11 +1,9 @@
 package com.common_lib.ratelimiter.impl;
 
-import com.razorpay.common.ratelimiter.RateLimitResult;
-import com.razorpay.common.ratelimiter.RateLimiter;
+import com.common_lib.ratelimiter.RateLimitResult;
+import com.common_lib.ratelimiter.RateLimiter;
 import lombok.RequiredArgsConstructor;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.data.redis.core.StringRedisTemplate;
-import org.springframework.stereotype.Component;
 
 import java.time.Duration;
 import java.util.concurrent.TimeUnit;
@@ -18,9 +16,7 @@ import java.util.concurrent.TimeUnit;
  * A counter tracks requests within the current window block. When a window expires,
  * the key is deleted by Redis, automatically resetting the counter for the next window.
  */
-@Component
 @RequiredArgsConstructor
-@ConditionalOnProperty(name = "app.rate-limit.method", havingValue = "fixed")
 public class FixedWindowRateLimiter implements RateLimiter {
 
     private final StringRedisTemplate redisTemplate;
