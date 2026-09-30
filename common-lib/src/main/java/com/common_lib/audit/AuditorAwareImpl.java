@@ -3,12 +3,10 @@ package com.common_lib.audit;
 import com.common_lib.context.MerchantContext;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.AuditorAware;
-import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 
 import java.util.Optional;
 
-@Component("AuditorAwareImpl")
 @RequiredArgsConstructor
 public class AuditorAwareImpl implements AuditorAware<String> {
 

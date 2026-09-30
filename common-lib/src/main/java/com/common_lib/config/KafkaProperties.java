@@ -1,7 +1,7 @@
 package com.common_lib.config;
 
-import com.razorpay.common.enums.EventAggregateType;
-import com.razorpay.common.exception.ResourceNotFoundException;
+import com.common_lib.enums.EventAggregateType;
+import com.common_lib.exception.ResourceNotFoundException;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
