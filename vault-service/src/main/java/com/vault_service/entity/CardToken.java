@@ -1,6 +1,6 @@
 package com.vault_service.entity;
 
-import com.razorpay.common.entity.BaseEntity;
+import com.common_lib.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 

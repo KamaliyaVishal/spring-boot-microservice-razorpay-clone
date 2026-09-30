@@ -1,6 +1,6 @@
 package com.vault_service.validation.impl;
 
-import com.razorpay.vault.validation.ExpiryYear;
+import com.vault_service.validation.ExpiryYear;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 

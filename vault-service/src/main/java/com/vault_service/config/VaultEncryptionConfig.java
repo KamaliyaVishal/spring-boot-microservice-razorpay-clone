@@ -7,7 +7,6 @@ import org.springframework.security.crypto.keygen.KeyGenerators;
 
 import javax.crypto.spec.SecretKeySpec;
 
-
 @Configuration
 public class VaultEncryptionConfig {
 

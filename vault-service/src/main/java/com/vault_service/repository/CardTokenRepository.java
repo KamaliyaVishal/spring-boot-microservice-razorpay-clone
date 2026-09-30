@@ -1,6 +1,6 @@
 package com.vault_service.repository;
 
-import com.razorpay.vault.entity.CardToken;
+import com.vault_service.entity.CardToken;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

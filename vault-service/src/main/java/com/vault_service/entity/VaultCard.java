@@ -1,7 +1,7 @@
 package com.vault_service.entity;
 
-import com.razorpay.common.entity.BaseEntity;
-import com.razorpay.common.enums.CardType;
+import com.common_lib.entity.BaseEntity;
+import com.common_lib.enums.CardType;
 import jakarta.persistence.*;
 import lombok.*;
 
