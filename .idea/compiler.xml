@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Gradle Imported" enabled="true">
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="false">
+          <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.projectlombok/lombok/1.18.46/a5cfe99fdf320e84955ef653f2ce1bf789d11385/lombok-1.18.46.jar" />
+        </processorPath>
+        <module name="payment-service.main" />
+        <module name="payment-service.test" />
+      </profile>
+    </annotationProcessing>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="common-lib" options="-parameters" />
+      <module name="common-lib.main" options="-parameters" />
+      <module name="common-lib.test" options="-parameters" />
+      <module name="merchant-service" options="-parameters" />
+      <module name="merchant-service.main" options="-parameters" />
+      <module name="merchant-service.test" options="-parameters" />
+      <module name="operations-service" options="-parameters" />
+      <module name="operations-service.main" options="-parameters" />
+      <module name="operations-service.test" options="-parameters" />
+      <module name="payment-service" options="-parameters" />
+      <module name="payment-service.main" options="-parameters" />
+      <module name="payment-service.test" options="-parameters" />
+      <module name="vault-service" options="-parameters" />
+      <module name="vault-service.main" options="-parameters" />
+      <module name="vault-service.test" options="-parameters" />
+    </option>
+  </component>
+</project>
