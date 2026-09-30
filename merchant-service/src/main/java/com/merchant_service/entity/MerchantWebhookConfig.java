@@ -1,0 +1,52 @@
+package com.merchant_service.entity;
+
+import com.razorpay.common.entity.BaseEntity;
+import jakarta.persistence.*;
+import lombok.*;
+
+import java.util.UUID;
+
+@Entity
+@Table(name = "merchant_webhook_config", indexes = {
+        @Index(name = "idx_webhook_merchant_id", columnList = "merchant_id, enabled")
+})
+@Getter
+@Setter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+public class MerchantWebhookConfig extends BaseEntity {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(nullable = false)
+    private UUID id;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "merchant_id", nullable = false)
+    private Merchant merchant;
+
+    @Column(name = "target_url", nullable = false, length = 500)
+    private String targetUrl;
+
+    @Column(name = "webhook_secret", nullable = false, length = 255)
+    private String webhookSecret;
+
+    @Column(name = "enabled")
+    private boolean enabled = true;
+
+    @Column(name = "event_types")
+    private String eventTypes; // Comma-separated list of event types
+
+    public boolean isSubscribedTo(String eventType) {
+        if (eventTypes == null || eventTypes.isBlank())
+            return true;
+        for (String typeRaw : eventTypes.split(",")) {
+            String type = typeRaw.trim();
+            if (type.equalsIgnoreCase("ALL") || type.equalsIgnoreCase(eventType))
+                return true;
+        }
+        return false;
+    }
+
+}
