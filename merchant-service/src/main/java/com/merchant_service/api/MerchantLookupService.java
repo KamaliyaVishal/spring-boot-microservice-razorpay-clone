@@ -1,8 +1,7 @@
 package com.merchant_service.api;
 
-
-import com.razorpay.common.dto.SettlementBankDetails;
-import com.razorpay.common.dto.WebhookTarget;
+import com.common_lib.dto.SettlementBankDetails;
+import com.common_lib.dto.WebhookTarget;
 
 import java.util.List;
 import java.util.UUID;
