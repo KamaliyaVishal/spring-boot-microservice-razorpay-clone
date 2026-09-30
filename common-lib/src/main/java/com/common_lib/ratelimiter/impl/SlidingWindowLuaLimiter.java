@@ -63,6 +63,7 @@ public class SlidingWindowLuaLimiter implements RateLimiter {
             return {1, remaining, 0}
             """;
 
+    @SuppressWarnings("unchecked")
     private final RedisScript<List<Long>> script = RedisScript.of(SLIDING_WINDOW_LUA,
             (Class<List<Long>>) (Class<?>) List.class);
 

@@ -5,12 +5,22 @@ plugins {
 }
 
 group = 'com'
-version = '0.0.1-SNAPSHOT'
+version = '1.0.0'
 
 java {
 	toolchain {
 		languageVersion = JavaLanguageVersion.of(25)
 	}
+}
+
+// Disables the generation of the executable Spring Boot fat JAR
+bootJar {
+    enabled = false
+}
+
+// Enables the generation of the standard reusable library JAR
+jar {
+    enabled = true
 }
 
 repositories {

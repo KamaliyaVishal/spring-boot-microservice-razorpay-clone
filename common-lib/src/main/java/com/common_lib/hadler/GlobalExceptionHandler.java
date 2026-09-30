@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import java.time.Instant;
 import java.util.List;
 
-
 @RestControllerAdvice
 @Slf4j
 public class GlobalExceptionHandler {
@@ -59,7 +58,7 @@ public class GlobalExceptionHandler {
                 fieldErrors
         );
 
-        return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(response);
+        return ResponseEntity.status(HttpStatus.UNPROCESSABLE_CONTENT).body(response);
     }
 
     // PRODUCTION SAFETY NET: Protects logs and hides low-level internal driver exceptions
