@@ -1,0 +1,17 @@
+package com.common_lib.exception;
+
+import com.razorpay.common.exception.enums.ErrorCode;
+import lombok.Getter;
+
+@Getter
+public class BusinessRuleViolationException extends BaseBusinessException  {
+
+    private final String parameterName;
+    private final Object invalidValue;
+
+    public BusinessRuleViolationException(String message, String parameterName, Object invalidValue) {
+        super(ErrorCode.BAD_REQUEST_PARAMETER, message);
+        this.parameterName = parameterName;
+        this.invalidValue = invalidValue;
+    }
+}
