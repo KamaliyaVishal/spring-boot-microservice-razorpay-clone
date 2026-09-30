@@ -1,6 +1,6 @@
 package com.payment_service.dto.request;
 
-import com.razorpay.common.entity.Money;
+import com.common_lib.entity.Money;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;

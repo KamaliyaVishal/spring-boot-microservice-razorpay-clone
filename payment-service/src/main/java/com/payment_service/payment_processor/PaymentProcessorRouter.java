@@ -1,9 +1,9 @@
 package com.payment_service.payment_processor;
 
-import com.razorpay.common.enums.PaymentMethod;
-import com.razorpay.common.exception.BusinessRuleViolationException;
-import com.razorpay.payment.payment_processor.dto.PaymentProcessorRequest;
-import com.razorpay.payment.payment_processor.dto.PaymentProcessorResponse;
+import com.common_lib.enums.PaymentMethod;
+import com.common_lib.exception.BusinessRuleViolationException;
+import com.payment_service.payment_processor.dto.PaymentProcessorRequest;
+import com.payment_service.payment_processor.dto.PaymentProcessorResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

@@ -1,10 +1,10 @@
 package com.payment_service.controller;
 
-import com.razorpay.merchant.security.MerchantContext;
-import com.razorpay.payment.dto.request.CreateOrderRequest;
-import com.razorpay.payment.dto.response.OrderResponse;
-import com.razorpay.payment.dto.response.PaymentResponse;
-import com.razorpay.payment.service.OrderService;
+import com.common_lib.context.MerchantContext;
+import com.payment_service.dto.request.CreateOrderRequest;
+import com.payment_service.dto.response.OrderResponse;
+import com.payment_service.dto.response.PaymentResponse;
+import com.payment_service.service.OrderService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

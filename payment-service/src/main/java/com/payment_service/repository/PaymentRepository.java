@@ -1,7 +1,7 @@
 package com.payment_service.repository;
 
-import com.razorpay.common.enums.PaymentStatus;
-import com.razorpay.payment.entity.Payment;
+import com.common_lib.enums.PaymentStatus;
+import com.payment_service.entity.Payment;
 import jakarta.persistence.LockModeType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Lock;

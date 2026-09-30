@@ -1,8 +1,8 @@
 package com.payment_service.payment_transition;
 
-import com.razorpay.common.enums.PaymentEvent;
-import com.razorpay.common.enums.PaymentStatus;
-import com.razorpay.common.exception.BusinessRuleViolationException;
+import com.common_lib.enums.PaymentEvent;
+import com.common_lib.enums.PaymentStatus;
+import com.common_lib.exception.BusinessRuleViolationException;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;

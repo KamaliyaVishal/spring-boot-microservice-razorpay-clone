@@ -1,8 +1,8 @@
 package com.payment_service.entity;
 
-import com.razorpay.common.entity.BaseEntity;
-import com.razorpay.common.enums.EventAggregateType;
-import com.razorpay.common.enums.OutboxStatus;
+import com.common_lib.entity.BaseEntity;
+import com.common_lib.enums.EventAggregateType;
+import com.common_lib.enums.OutboxStatus;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.JdbcTypeCode;

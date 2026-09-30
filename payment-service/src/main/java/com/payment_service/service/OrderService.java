@@ -1,8 +1,8 @@
 package com.payment_service.service;
 
-import com.razorpay.payment.dto.request.CreateOrderRequest;
-import com.razorpay.payment.dto.response.OrderResponse;
-import com.razorpay.payment.dto.response.PaymentResponse;
+import com.payment_service.dto.request.CreateOrderRequest;
+import com.payment_service.dto.response.OrderResponse;
+import com.payment_service.dto.response.PaymentResponse;
 
 import java.util.List;
 import java.util.UUID;

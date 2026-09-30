@@ -1,9 +1,9 @@
 package com.payment_service.mapper;
 
-import com.razorpay.payment.dto.response.OrderResponse;
-import com.razorpay.payment.dto.response.PaymentResponse;
-import com.razorpay.payment.entity.OrderRecord;
-import com.razorpay.payment.entity.Payment;
+import com.payment_service.dto.response.OrderResponse;
+import com.payment_service.dto.response.PaymentResponse;
+import com.payment_service.entity.OrderRecord;
+import com.payment_service.entity.Payment;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;

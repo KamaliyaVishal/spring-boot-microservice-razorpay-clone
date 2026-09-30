@@ -1,7 +1,7 @@
 package com.payment_service.payment_processor;
 
-import com.razorpay.payment.payment_processor.dto.PaymentProcessorRequest;
-import com.razorpay.payment.payment_processor.dto.PaymentProcessorResponse;
+import com.payment_service.payment_processor.dto.PaymentProcessorRequest;
+import com.payment_service.payment_processor.dto.PaymentProcessorResponse;
 
 public interface PaymentProcessor {
 

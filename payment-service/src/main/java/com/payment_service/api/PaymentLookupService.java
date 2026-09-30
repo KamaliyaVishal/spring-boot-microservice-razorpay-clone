@@ -1,7 +1,6 @@
 package com.payment_service.api;
 
-
-import com.razorpay.payment.entity.Payment;
+import com.payment_service.entity.Payment;
 
 import java.util.List;
 import java.util.UUID;

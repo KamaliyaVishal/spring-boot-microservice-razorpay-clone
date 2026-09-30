@@ -1,9 +1,9 @@
 package com.payment_service.dto.response;
 
+import com.common_lib.entity.Money;
+import com.common_lib.enums.PaymentMethod;
+import com.common_lib.enums.PaymentStatus;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.razorpay.common.entity.Money;
-import com.razorpay.common.enums.PaymentMethod;
-import com.razorpay.common.enums.PaymentStatus;
 
 import java.time.LocalDateTime;
 import java.util.Map;

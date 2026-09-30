@@ -1,8 +1,8 @@
 package com.payment_service.outbox;
 
-import com.razorpay.common.enums.OutboxStatus;
-import com.razorpay.payment.entity.OutboxEvent;
-import com.razorpay.payment.repository.OutboxEventRepository;
+import com.common_lib.enums.OutboxStatus;
+import com.payment_service.entity.OutboxEvent;
+import com.payment_service.repository.OutboxEventRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;

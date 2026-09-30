@@ -1,7 +1,7 @@
 package com.payment_service.simulator;
 
-import com.razorpay.common.enums.ChaosMode;
-import com.razorpay.common.enums.PaymentMethod;
+import com.common_lib.enums.ChaosMode;
+import com.common_lib.enums.PaymentMethod;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;

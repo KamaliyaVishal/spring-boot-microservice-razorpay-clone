@@ -1,10 +1,10 @@
 package com.payment_service.config;
 
-import com.razorpay.common.enums.PaymentMethod;
-import com.razorpay.payment.payment_gateway.PaymentAdapter;
-import com.razorpay.payment.payment_gateway.adapter.CardPaymentAdapter;
-import com.razorpay.payment.payment_gateway.adapter.NetBakingPaymentAdapter;
-import com.razorpay.payment.payment_gateway.adapter.UpiPaymentAdapter;
+import com.common_lib.enums.PaymentMethod;
+import com.payment_service.payment_gateway.PaymentAdapter;
+import com.payment_service.payment_gateway.adapter.CardPaymentAdapter;
+import com.payment_service.payment_gateway.adapter.NetBakingPaymentAdapter;
+import com.payment_service.payment_gateway.adapter.UpiPaymentAdapter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

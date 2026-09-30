@@ -1,6 +1,6 @@
 package com.payment_service.dto.request;
 
-import com.razorpay.common.enums.PaymentMethod;
+import com.common_lib.enums.PaymentMethod;
 import jakarta.validation.constraints.NotNull;
 
 import java.util.Map;

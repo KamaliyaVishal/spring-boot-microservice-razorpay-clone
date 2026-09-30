@@ -1,11 +1,11 @@
 package com.payment_service.payment_transition;
 
-import com.razorpay.common.enums.PaymentActor;
-import com.razorpay.common.enums.PaymentEvent;
-import com.razorpay.common.enums.PaymentStatus;
-import com.razorpay.payment.entity.Payment;
-import com.razorpay.payment.entity.PaymentTransitionLog;
-import com.razorpay.payment.repository.PaymentTransitionLogRepository;
+import com.common_lib.enums.PaymentActor;
+import com.common_lib.enums.PaymentEvent;
+import com.common_lib.enums.PaymentStatus;
+import com.payment_service.entity.Payment;
+import com.payment_service.entity.PaymentTransitionLog;
+import com.payment_service.repository.PaymentTransitionLogRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

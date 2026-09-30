@@ -1,9 +1,9 @@
 package com.payment_service.entity;
 
-import com.razorpay.common.entity.BaseEntity;
-import com.razorpay.common.enums.PaymentActor;
-import com.razorpay.common.enums.PaymentEvent;
-import com.razorpay.common.enums.PaymentStatus;
+import com.common_lib.entity.BaseEntity;
+import com.common_lib.enums.PaymentActor;
+import com.common_lib.enums.PaymentEvent;
+import com.common_lib.enums.PaymentStatus;
 import jakarta.persistence.*;
 import lombok.*;
 

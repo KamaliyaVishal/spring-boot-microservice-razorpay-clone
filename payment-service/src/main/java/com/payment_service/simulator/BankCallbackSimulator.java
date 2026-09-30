@@ -1,11 +1,11 @@
 package com.payment_service.simulator;
 
-import com.razorpay.common.enums.ChaosMode;
-import com.razorpay.common.enums.PaymentStatus;
-import com.razorpay.common.util.RandomizerUtil;
-import com.razorpay.payment.entity.Payment;
-import com.razorpay.payment.repository.PaymentRepository;
-import com.razorpay.payment.service.PaymentService;
+import com.common_lib.enums.ChaosMode;
+import com.common_lib.enums.PaymentStatus;
+import com.common_lib.util.RandomizerUtil;
+import com.payment_service.entity.Payment;
+import com.payment_service.repository.PaymentRepository;
+import com.payment_service.service.PaymentService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;

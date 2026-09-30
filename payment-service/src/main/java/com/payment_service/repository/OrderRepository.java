@@ -1,6 +1,6 @@
 package com.payment_service.repository;
 
-import com.razorpay.payment.entity.OrderRecord;
+import com.payment_service.entity.OrderRecord;
 import jakarta.persistence.LockModeType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Lock;

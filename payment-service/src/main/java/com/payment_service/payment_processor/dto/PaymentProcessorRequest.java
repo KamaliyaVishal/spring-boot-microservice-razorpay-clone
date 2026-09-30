@@ -1,8 +1,7 @@
 package com.payment_service.payment_processor.dto;
 
-
-import com.razorpay.common.entity.Money;
-import com.razorpay.common.enums.PaymentMethod;
+import com.common_lib.entity.Money;
+import com.common_lib.enums.PaymentMethod;
 
 import java.util.Map;
 import java.util.UUID;
