@@ -1,0 +1,21 @@
+spring:
+  application:
+    name: config-server
+
+  cloud:
+    config.server.git:
+      uri: https://github.com/KamaliyaVishal/distributed-razorpay-clone-config
+      username: KamaliyaVishal
+      password: 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
+      default-label: master
+
+server.port: 8888
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  health:
+    config:
+      enabled: false

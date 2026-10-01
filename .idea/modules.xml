@@ -3,6 +3,9 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/common-lib.main.iml" filepath="$PROJECT_DIR$/.idea/modules/common-lib.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/operations-service.main.iml" filepath="$PROJECT_DIR$/.idea/modules/operations-service.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/operations-service.test.iml" filepath="$PROJECT_DIR$/.idea/modules/operations-service.test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/payment-service.main.iml" filepath="$PROJECT_DIR$/.idea/modules/payment-service.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/spring-boot-microservice-razorpay-clone.iml" filepath="$PROJECT_DIR$/.idea/spring-boot-microservice-razorpay-clone.iml" />
     </modules>
   </component>

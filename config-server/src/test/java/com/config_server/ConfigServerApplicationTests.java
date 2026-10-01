@@ -1,10 +1,10 @@
-package com.conig_service;
+package com.config_server;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class ConigServiceApplicationTests {
+class ConfigServerApplicationTests {
 
 	@Test
 	void contextLoads() {

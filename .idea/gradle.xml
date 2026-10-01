@@ -13,11 +13,11 @@
         </option>
       </GradleProjectSettings>
       <GradleProjectSettings>
-        <option name="externalProjectPath" value="$PROJECT_DIR$/conig-service" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$/config-server" />
         <option name="gradleJvm" value="#JAVA_HOME" />
         <option name="modules">
           <set>
-            <option value="$PROJECT_DIR$/conig-service" />
+            <option value="$PROJECT_DIR$/config-server" />
           </set>
         </option>
       </GradleProjectSettings>
