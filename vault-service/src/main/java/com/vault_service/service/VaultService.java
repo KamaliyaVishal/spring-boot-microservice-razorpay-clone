@@ -1,5 +1,6 @@
 package com.vault_service.service;
 
+import com.common_lib.dto.PaymentProcessorResponse;
 import com.common_lib.entity.Money;
 import com.vault_service.dto.request.TokenizeRequest;
 import com.vault_service.dto.response.TokenizeResponse;

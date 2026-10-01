@@ -1,5 +1,7 @@
 package com.vault_service.service.impl;
 
+import com.common_lib.dto.PaymentProcessorRequest;
+import com.common_lib.dto.PaymentProcessorResponse;
 import com.common_lib.entity.Money;
 import com.common_lib.enums.CardType;
 import com.common_lib.exception.ResourceNotFoundException;
@@ -9,6 +11,7 @@ import com.vault_service.dto.request.TokenizeRequest;
 import com.vault_service.dto.response.TokenizeResponse;
 import com.vault_service.entity.CardToken;
 import com.vault_service.entity.VaultCard;
+import com.vault_service.processor.CardPaymentProcessor;
 import com.vault_service.repository.CardTokenRepository;
 import com.vault_service.repository.VaultCardRepository;
 import com.vault_service.service.VaultService;
@@ -34,7 +37,7 @@ public class VaultServiceImpl implements VaultService {
     private final VaultCardRepository vaultCardRepository;
     private final CardTokenRepository cardTokenRepository;
     private final BytesEncryptor dekEncryptor;
-    private final PaymentProcessorRouter paymentProcessorRouter;
+    private final CardPaymentProcessor cardPaymentProcessor;
 
     @Value("${app.vault.randomToken-length:32}")
     private Integer tokenLength;
@@ -96,8 +99,8 @@ public class VaultServiceImpl implements VaultService {
             PaymentProcessorRequest paymentProcessorRequest = PaymentProcessorRequest
                     .card(paymentId, pan, expiry, amount, methodDetails);
 
-            PaymentProcessorResponse paymentProcessorResponse = paymentProcessorRouter
-                    .routeToDedicatedPaymentProcessor(paymentProcessorRequest);
+            PaymentProcessorResponse paymentProcessorResponse = cardPaymentProcessor
+                    .charge(paymentProcessorRequest);
 
             log.info("Vault charge registered with token: {}*****", token.substring(0, 4));
 
