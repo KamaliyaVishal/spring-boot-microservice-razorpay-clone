@@ -69,7 +69,6 @@ public class OrderServiceImpl implements OrderService {
                         ? request.expiresAt()
                         : LocalDateTime.now().plusMinutes(defaultOrderExpiryMinutes))
                 .build();
-
         order = orderRepository.save(order);
 
         outboxEventPublisher.publish(EventAggregateType.ORDER, order.getId(), "ORDER_CREATED",
