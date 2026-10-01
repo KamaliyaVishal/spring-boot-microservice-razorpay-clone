@@ -14,7 +14,7 @@ import java.util.UUID;
 public interface PaymentServiceClient {
 
     @GetMapping("/unsettled-captured")
-    List<PaymentSettlementView> findUnsettledCaptured(@RequestParam UUID merchantId);
+    List<PaymentSettlementView> findUnsettledCapturedPayments(@RequestParam UUID merchantId);
 
     @PostMapping("/mark-settled")
     void markSettled(@RequestBody List<UUID> paymentIds);
