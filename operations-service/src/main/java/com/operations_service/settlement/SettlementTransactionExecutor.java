@@ -7,6 +7,7 @@ import com.common_lib.enums.SettlementStatus;
 import com.operations_service.entity.Settlement;
 import com.operations_service.entity.SettlementPayment;
 import com.operations_service.entity.SettlementPaymentId;
+import com.operations_service.outbox.OutboxEventPublisher;
 import com.operations_service.repository.SettlementPaymentRepository;
 import com.operations_service.repository.SettlementRepository;
 import com.operations_service.settlement.dto.BankTransferResult;
@@ -35,7 +36,6 @@ public class SettlementTransactionExecutor {
     private final SettlementPaymentRepository settlementPaymentRepository;
     private final MerchantLookupService merchantLookupService;
     private final BankTransferProcessor bankTransferProcessor;
-    // Todo: publisher inside it's own db
     private final OutboxEventPublisher outboxEventPublisher;
 
     @Transactional(rollbackFor = Exception.class)
