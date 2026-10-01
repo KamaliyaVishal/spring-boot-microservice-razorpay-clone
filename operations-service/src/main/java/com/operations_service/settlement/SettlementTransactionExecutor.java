@@ -122,7 +122,6 @@ public class SettlementTransactionExecutor {
                     .map(SettlementPaymentId::getPaymentId)
                     .toList();
             paymentServiceClient.markSettled(paymentIds);
-
             log.info("Settlement processed successfully, settlementId: {}", settlement.getId());
 
             outboxEventPublisher.publish(
