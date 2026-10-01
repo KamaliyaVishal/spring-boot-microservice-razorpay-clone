@@ -1,10 +1,12 @@
 package com.payment_service.service.Impl;
 
+import com.common_lib.dto.FindOrCreateCustomerRequest;
 import com.common_lib.enums.EventAggregateType;
 import com.common_lib.enums.OrderStatus;
 import com.common_lib.exception.BusinessRuleViolationException;
 import com.common_lib.exception.DuplicateResourceException;
 import com.common_lib.exception.ResourceNotFoundException;
+import com.payment_service.client.CustomerServiceClient;
 import com.payment_service.dto.request.CreateOrderRequest;
 import com.payment_service.dto.response.OrderResponse;
 import com.payment_service.dto.response.PaymentResponse;
@@ -33,8 +35,8 @@ public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
     private final PaymentRepository paymentRepository;
     private final GlobalPaymentMapper mapper;
-    private final CustomerService customerService;
     private final OutboxEventPublisher outboxEventPublisher;
+    private final CustomerServiceClient customerServiceClient;
 
     @Value("${payment.order.default-order-expiry-minutes:30}")
     private int defaultOrderExpiryMinutes;
@@ -48,10 +50,11 @@ public class OrderServiceImpl implements OrderService {
 
         UUID customerId = null;
         if (request.customer() != null) {
-            customerId = customerService.findOrCreate(merchantId,
-                    request.customer().email(),
-                    request.customer().name(),
-                    request.customer().phone()
+            customerId = customerServiceClient.findOrCreate(
+                    new FindOrCreateCustomerRequest(merchantId,
+                            request.customer().email(),
+                            request.customer().name(),
+                            request.customer().phone())
             );
         }
 
