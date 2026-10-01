@@ -1,8 +1,8 @@
 package com.operations_service.outbox;
 
 import com.common_lib.enums.OutboxStatus;
-import com.payment_service.entity.OutboxEvent;
-import com.payment_service.repository.OutboxEventRepository;
+import com.operations_service.entity.OutboxEvent;
+import com.operations_service.repository.OutboxEventRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
