@@ -115,6 +115,14 @@ public class SettlementTransactionExecutor {
             settlement.setStatus(SettlementStatus.PROCESSED);
             settlement.setProcessedAt(LocalDateTime.now());
             settlementRepository.save(settlement);
+
+            List<SettlementPayment> settlementPaymentList = settlementPaymentRepository.findBySettlement(settlement);
+            List<UUID> paymentIds = settlementPaymentList.stream()
+                    .map(SettlementPayment::getId)
+                    .map(SettlementPaymentId::getPaymentId)
+                    .toList();
+            paymentServiceClient.markSettled(paymentIds);
+
             log.info("Settlement processed successfully, settlementId: {}", settlement.getId());
 
             outboxEventPublisher.publish(
