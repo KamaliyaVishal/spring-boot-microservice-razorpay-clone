@@ -42,6 +42,7 @@ public class WebhookEvent extends BaseEntity {
     private String signature;
 
     @Column(name = "status", nullable = false)
+    @Builder.Default
     private WebhookEventStatus status = WebhookEventStatus.PENDING;
 
     @Column(name = "attempt_count")

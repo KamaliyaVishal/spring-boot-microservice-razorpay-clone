@@ -3,6 +3,7 @@ package com.operations_service.webhook;
 import com.common_lib.dto.WebhookTarget;
 import com.common_lib.enums.WebhookEventStatus;
 import com.common_lib.util.SignerUtil;
+import com.operations_service.client.MerchantServiceClient;
 import com.operations_service.entity.WebhookEvent;
 import com.operations_service.repository.WebhookEventRepository;
 import lombok.RequiredArgsConstructor;
@@ -25,12 +26,12 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class WebhookKafkaConsumer {
 
-    private final MerchantLookupService merchantLookupService;
     private final ObjectMapper objectMapper;
     private final SignerUtil signerUtil;
     private final WebhookEventRepository webhookEventRepository;
     private final WebhookRetryQueue webhookRetryQueue;
     private final WebhookDlqRecorder webhookDlqRecorder;
+    private final MerchantServiceClient merchantServiceClient;
 
     @KafkaListener(topics = {
             "${app.kafka.topics.payments:payments.events}",
@@ -56,7 +57,7 @@ public class WebhookKafkaConsumer {
 
             UUID merchantId = UUID.fromString(merchantIdRaw.toString());
 
-            List<WebhookTarget> targets = merchantLookupService.getActiveConfigsForEvent(merchantId, eventType);
+            List<WebhookTarget> targets = merchantServiceClient.getActiveConfigsForEvent(merchantId, eventType);
             if (targets.isEmpty()) {
                 log.info("No webhook target was found, skipping event: {}", eventType);
                 ack.acknowledge();
