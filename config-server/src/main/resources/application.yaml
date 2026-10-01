@@ -7,7 +7,7 @@ spring:
       uri: https://github.com/KamaliyaVishal/distributed-razorpay-clone-config
       username: KamaliyaVishal
       password: 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
-      default-label: master
+      default-label: main
 
 server.port: 8888
 
