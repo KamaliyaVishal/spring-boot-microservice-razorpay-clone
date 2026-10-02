@@ -1,4 +1,4 @@
-package com.api_gateway.security;
+package com.api_gateway.filters;
 
 import com.common_lib.idempotency.IdempotencyFilter;
 import jakarta.servlet.FilterChain;
@@ -15,7 +15,8 @@ import java.io.IOException;
 
 @Configuration
 @RequiredArgsConstructor
-@Order(Ordered.HIGHEST_PRECEDENCE + 2) // Sets the filter execution order directly
+// Executes 4th: Runs after GatewayAuthFilter to evaluate duplicate requests using authenticated context data
+@Order(Ordered.HIGHEST_PRECEDENCE + 3)
 public class IdempotencyApiFilter extends OncePerRequestFilter {
 
     private final IdempotencyFilter idempotencyFilter;

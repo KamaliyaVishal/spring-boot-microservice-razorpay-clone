@@ -1,6 +1,8 @@
 package com.common_lib;
 
 import com.common_lib.audit.AuditorAwareImpl;
+import com.common_lib.cache.ApiKeyCache;
+import com.common_lib.cache.RedisApiKeyCache;
 import com.common_lib.config.AesEncryptionConfig;
 import com.common_lib.config.KafkaProperties;
 import com.common_lib.context.MerchantContext;
@@ -13,6 +15,7 @@ import com.common_lib.ratelimiter.impl.FixedWindowRateLimiter;
 import com.common_lib.ratelimiter.impl.SlidingWindowLuaLimiter;
 import com.common_lib.ratelimiter.impl.SlidingWindowRateLimiter;
 import com.common_lib.ratelimiter.impl.TokenBucketRateLimiter;
+import com.common_lib.util.JwtUtil;
 import com.common_lib.util.SignerUtil;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -24,9 +27,12 @@ import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.encrypt.BytesEncryptor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.context.annotation.RequestScope;
 import org.springframework.web.servlet.HandlerExceptionResolver;
+import tools.jackson.databind.ObjectMapper;
 
 @AutoConfiguration
 @EnableConfigurationProperties(KafkaProperties.class)
@@ -44,13 +50,15 @@ public class CommonLibAutoConfigurations {
 
     @Bean
     @ConditionalOnProperty(name = "vault.master-key")
-    public BytesEncryptor masterKeyEncryptor(@Value("${vault.master-key}") String masterKey, @Value("${vault.master-key}") Integer keyLength) {
+    public BytesEncryptor masterKeyEncryptor(@Value("${vault.master-key}") String masterKey,
+                                             @Value("${vault.master-key}") Integer keyLength) {
         return new AesEncryptionConfig().masterKeyEncryptor(masterKey, keyLength);
     }
 
     @Bean
     @ConditionalOnProperty(name = "webhook.secret-encryption-key")
-    public BytesEncryptor webhookSecretEncryptor(@Value("${webhook.secret-encryption-key}") String masterKey, @Value("${vault.master-key}") Integer keyLength) {
+    public BytesEncryptor webhookSecretEncryptor(@Value("${webhook.secret-encryption-key}") String masterKey,
+                                                 @Value("${vault.master-key}") Integer keyLength) {
         return new AesEncryptionConfig().masterKeyEncryptor(masterKey, keyLength);
     }
 
@@ -73,7 +81,8 @@ public class CommonLibAutoConfigurations {
     @Bean
     public IdempotencyFilter idempotencyFilter(MerchantContext merchantContext,
                                                IdempotencyStore idempotencyStore,
-                                               @Qualifier("handlerExceptionResolver") HandlerExceptionResolver handlerExceptionResolver) {
+                                               @Qualifier("handlerExceptionResolver")
+                                                   HandlerExceptionResolver handlerExceptionResolver) {
         return new IdempotencyFilter(merchantContext, idempotencyStore, handlerExceptionResolver);
     }
 
@@ -106,4 +115,18 @@ public class CommonLibAutoConfigurations {
         return new SignerUtil();
     }
 
+    @Bean
+    public JwtUtil jwtUtil(@Value("${app.jwt.secret-key}") String secretKey) {
+        return new JwtUtil(secretKey);
+    }
+
+    @Bean
+    public ApiKeyCache apiKeyCache(StringRedisTemplate stringRedisTemplate, ObjectMapper objectMapper) {
+        return new RedisApiKeyCache(stringRedisTemplate, objectMapper);
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 }

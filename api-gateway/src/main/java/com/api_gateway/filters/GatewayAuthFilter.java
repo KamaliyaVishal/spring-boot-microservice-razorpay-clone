@@ -1,5 +1,7 @@
-package com.api_gateway.security;
+package com.api_gateway.filters;
 
+import com.api_gateway.security.HeaderAugmentingRequestWrapper;
+import com.api_gateway.security.PublicRouteMatcher;
 import com.api_gateway.security.api.ApiKeyAuthHandler;
 import com.api_gateway.security.exception.GatewayAuthenticationException;
 import com.api_gateway.security.jwt.JwtAuthHandler;
@@ -24,7 +26,8 @@ import java.util.Map;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-@Order(Ordered.HIGHEST_PRECEDENCE + 1)
+// Executes 3rd: Runs after MerchantContextFilter to validate credentials and inject verified identity data
+@Order(Ordered.HIGHEST_PRECEDENCE + 2)
 public class GatewayAuthFilter extends OncePerRequestFilter {
 
     private static final String BEARER_PREFIX = "Bearer ";

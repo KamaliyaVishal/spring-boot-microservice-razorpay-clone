@@ -13,4 +13,9 @@ import java.util.UUID;
 public class MerchantContext {
     private UUID merchantId;
     private String keyId;
+
+    public void clear() {
+        this.merchantId = null; // or threadLocal.remove(); if using ThreadLocal
+        this.keyId = null;
+    }
 }
