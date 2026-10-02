@@ -33,6 +33,7 @@ public class MerchantWebhookConfig extends BaseEntity {
     private String webhookSecret;
 
     @Column(name = "enabled")
+    @Builder.Default
     private boolean enabled = true;
 
     @Column(name = "event_types")
