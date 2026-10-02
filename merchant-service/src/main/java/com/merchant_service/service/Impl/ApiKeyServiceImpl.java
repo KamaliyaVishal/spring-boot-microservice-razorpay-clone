@@ -1,9 +1,9 @@
 package com.merchant_service.service.Impl;
 
+import com.common_lib.cache.ApiKeyCache;
 import com.common_lib.exception.BusinessRuleViolationException;
 import com.common_lib.exception.ResourceNotFoundException;
 import com.common_lib.util.RandomizerUtil;
-import com.merchant_service.cache.impl.ApiKeyCacheImpl;
 import com.merchant_service.dto.request.CreateApiKeyRequest;
 import com.merchant_service.dto.response.ApiKeyResponse;
 import com.merchant_service.dto.response.CreateApiKeyResponse;
@@ -33,7 +33,7 @@ public class ApiKeyServiceImpl implements ApiKeyService {
     private final MerchantRepository merchantRepository;
     private final GlobalMerchantMapper mapper;
     private final BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
-    private final ApiKeyCacheImpl apiKeyCache;
+    private final ApiKeyCache apiKeyCache;
 
     @Value("${app.api-key.keyId-length:24}")
     private Integer keyIdLength;
