@@ -51,15 +51,20 @@ public class CommonLibAutoConfigurations {
     @Bean
     @ConditionalOnProperty(name = "vault.master-key")
     public BytesEncryptor masterKeyEncryptor(@Value("${vault.master-key}") String masterKey,
-                                             @Value("${vault.master-key}") Integer keyLength) {
+                                             @Value("${vault.random-key-length}") Integer keyLength) {
         return new AesEncryptionConfig().masterKeyEncryptor(masterKey, keyLength);
     }
 
     @Bean
     @ConditionalOnProperty(name = "webhook.secret-encryption-key")
     public BytesEncryptor webhookSecretEncryptor(@Value("${webhook.secret-encryption-key}") String masterKey,
-                                                 @Value("${vault.master-key}") Integer keyLength) {
+                                                 @Value("${webhook.random-key-length}") Integer keyLength) {
         return new AesEncryptionConfig().masterKeyEncryptor(masterKey, keyLength);
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 
     @Bean
@@ -123,10 +128,5 @@ public class CommonLibAutoConfigurations {
     @Bean
     public ApiKeyCache apiKeyCache(StringRedisTemplate stringRedisTemplate, ObjectMapper objectMapper) {
         return new RedisApiKeyCache(stringRedisTemplate, objectMapper);
-    }
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
     }
 }
