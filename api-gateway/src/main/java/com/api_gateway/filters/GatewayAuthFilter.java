@@ -1,7 +1,6 @@
 package com.api_gateway.filters;
 
 import com.api_gateway.security.HeaderAugmentingRequestWrapper;
-import com.api_gateway.security.PublicRouteMatcher;
 import com.api_gateway.security.api.ApiKeyAuthHandler;
 import com.api_gateway.security.exception.GatewayAuthenticationException;
 import com.api_gateway.security.jwt.JwtAuthHandler;
@@ -43,7 +42,7 @@ public class GatewayAuthFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
 
-        log.info("Incoming request: {}", request.getRequestURI());
+        log.info("GatewayAuthFilter: Incoming request: {}", request.getRequestURI());
 
         if (publicRouteMatcher.isPublic(request.getRequestURI())) {
             filterChain.doFilter(request, response);
@@ -86,28 +85,3 @@ public class GatewayAuthFilter extends OncePerRequestFilter {
         objectMapper.writeValue(response.getWriter(), Map.of("errorCode", errorCode, "errorDescription", message));
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

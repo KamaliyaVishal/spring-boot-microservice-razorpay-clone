@@ -17,20 +17,23 @@ import com.common_lib.ratelimiter.impl.SlidingWindowRateLimiter;
 import com.common_lib.ratelimiter.impl.TokenBucketRateLimiter;
 import com.common_lib.util.JwtUtil;
 import com.common_lib.util.SignerUtil;
+import com.common_lib.web.MerchantContextFilter;
+import jakarta.servlet.Filter;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ScopedProxyMode;
+import org.springframework.core.Ordered;
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.StringRedisTemplate;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.encrypt.BytesEncryptor;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.context.annotation.RequestScope;
+import org.springframework.web.filter.RequestContextFilter;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 import tools.jackson.databind.ObjectMapper;
 
@@ -63,14 +66,26 @@ public class CommonLibAutoConfigurations {
     }
 
     @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-
-    @Bean
     @RequestScope(proxyMode = ScopedProxyMode.TARGET_CLASS)
     public MerchantContext merchantContext() {
         return new MerchantContext();
+    }
+
+    @Bean
+    @ConditionalOnProperty(name = "app.security.trust-inbound-headers", havingValue = "true", matchIfMissing = true)
+    public FilterRegistrationBean<Filter> merchantContextRegistration(MerchantContext merchantContext) {
+        FilterRegistrationBean<Filter> registration = new FilterRegistrationBean<>(new MerchantContextFilter(merchantContext));
+        registration.setOrder(Ordered.HIGHEST_PRECEDENCE + 1);
+        registration.addUrlPatterns("/*");
+        return registration;
+    }
+
+    @Bean
+    public FilterRegistrationBean<Filter> requestContextFilterRegistration() {
+        FilterRegistrationBean<Filter> registration = new FilterRegistrationBean<>(new RequestContextFilter());
+        registration.setOrder(Ordered.HIGHEST_PRECEDENCE);
+        registration.addUrlPatterns("/*");
+        return registration;
     }
 
     @Bean
@@ -130,4 +145,5 @@ public class CommonLibAutoConfigurations {
     public ApiKeyCache apiKeyCache(StringRedisTemplate stringRedisTemplate, ObjectMapper objectMapper) {
         return new RedisApiKeyCache(stringRedisTemplate, objectMapper);
     }
+
 }

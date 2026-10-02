@@ -1,6 +1,6 @@
 package com.api_gateway;
 
-import com.api_gateway.security.SecurityRouteProperties;
+import com.api_gateway.filters.SecurityRouteProperties;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
