@@ -110,7 +110,8 @@ public class CommonLibAutoConfigurations {
     }
 
     @Bean
-    @ConditionalOnProperty(name = "app.rate-limit.method", havingValue = "bucket")
+    // This ensures a token bucket limiter is created if the property isn't defined!
+    @ConditionalOnProperty(name = "app.rate-limit.method", havingValue = "bucket", matchIfMissing = true)
     public RateLimiter tokenBucketRateLimiter(StringRedisTemplate redis) {
         return new TokenBucketRateLimiter(redis);
     }
