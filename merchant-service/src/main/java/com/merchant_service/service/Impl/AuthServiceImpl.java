@@ -2,6 +2,7 @@ package com.merchant_service.service.Impl;
 
 import com.common_lib.enums.MerchantStatus;
 import com.common_lib.enums.UserRole;
+import com.common_lib.exception.BusinessRuleViolationException;
 import com.common_lib.exception.DuplicateResourceException;
 import com.common_lib.exception.ResourceNotFoundException;
 import com.merchant_service.dto.request.LoginRequest;
@@ -16,8 +17,6 @@ import com.merchant_service.repository.MerchantRepository;
 import com.merchant_service.security.JwtUtil;
 import com.merchant_service.service.AuthService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,7 +30,6 @@ public class AuthServiceImpl implements AuthService {
     private final MerchantRepository merchantRepository;
     private final GlobalMerchantMapper mapper;
     private final PasswordEncoder passwordEncoder;
-    private final AuthenticationManager authenticationManager;
     private final JwtUtil jwtUtil;
 
     @Override
@@ -63,12 +61,12 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public LoginResponse loginMerchant(LoginRequest request) {
 
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(request.email(), request.password())
-        );
-
         AppUser appUser = appUserRepository.findByEmail(request.email())
                 .orElseThrow(() -> new ResourceNotFoundException("User", request.email()));
+
+        if (!passwordEncoder.matches(request.password(), appUser.getPasswordHash())) {
+            throw new BusinessRuleViolationException("INVALID_CREDENTIALS", "Invalid email or password", request.password());
+        }
 
         String accessToken = jwtUtil.generateAccessToken(request.email(), appUser.getMerchant().getId(),
                 appUser.getRole().toString());
