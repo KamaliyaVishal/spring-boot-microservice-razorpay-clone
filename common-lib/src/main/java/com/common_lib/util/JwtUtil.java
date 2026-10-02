@@ -1,4 +1,4 @@
-package com.merchant_service.security;
+package com.common_lib.util;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -16,11 +16,8 @@ import java.util.UUID;
 public class JwtUtil {
 
     @Value("${app.jwt.secret-key}")
-    String secretKey;
+    private String secretKey;
 
-    private SecretKey getSecretKey() {
-        return Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
-    }
 
     public String generateAccessToken(String email, UUID merchantId, String role) {
         Instant now = Instant.now();
@@ -33,19 +30,23 @@ public class JwtUtil {
                 .compact();
     }
 
-    public Claims verifyAccessToken(String accessToken) {
+    public Claims verify(String accessToken) {
         return Jwts.parser()
                 .verifyWith(getSecretKey())
                 .build()
-                .parseSignedClaims(accessToken).getPayload();
+                .parseSignedClaims(accessToken)
+                .getPayload();
+    }
+
+    private SecretKey getSecretKey() {
+        return Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
+    }
+
+    public String extractMerchantId(Claims claims) {
+        return claims.get("merchant_id", String.class);
     }
 
     public String extractRole(Claims claims) {
         return claims.get("role", String.class);
     }
-
-    public String extractMerchantId(Claims claims) {
-        return claims.get("merchantId", String.class);
-    }
-
 }
