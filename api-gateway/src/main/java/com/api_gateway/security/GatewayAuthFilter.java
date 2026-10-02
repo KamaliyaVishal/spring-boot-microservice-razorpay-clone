@@ -1,8 +1,9 @@
 package com.api_gateway.security;
 
+import com.api_gateway.security.api.ApiKeyAuthHandler;
 import com.api_gateway.security.exception.GatewayAuthenticationException;
 import com.api_gateway.security.jwt.JwtAuthHandler;
-import com.codingshuttle.razorpay.common_lib.exception.RateLimitException;
+import com.common_lib.exception.RateLimitException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

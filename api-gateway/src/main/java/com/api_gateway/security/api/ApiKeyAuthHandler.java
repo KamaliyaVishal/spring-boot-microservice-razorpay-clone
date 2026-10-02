@@ -21,7 +21,6 @@ import java.time.Duration;
 import java.util.Base64;
 import java.util.Map;
 
-
 @Slf4j
 @Component
 @RequiredArgsConstructor
@@ -41,25 +40,23 @@ public class ApiKeyAuthHandler {
     private int requestsPerMinute;
 
     public Map<String, String> authenticate(String authHeader, HttpServletResponse response) {
-        String[] credentials = decodeBasic(authHeader);
-        if (credentials == null) {
-            throw new GatewayAuthenticationException("Malformed API key header");
-        }
 
+        String[] credentials = decodeBasic(authHeader);
+        if (credentials == null)
+            throw new GatewayAuthenticationException("Malformed API key header");
+
+        // api-key authentication
         String keyId = credentials[0];
         String rawSecret = credentials[1];
-
         ApiKeyCacheEntry entry = apiKeyCache.get(keyId).orElseGet(() -> loadAndCache(keyId));
-
-        if (entry == null || !entry.enabled() || !secretMatches(rawSecret, entry)) {
+        if (entry == null || !entry.enabled() || !secretMatches(rawSecret, entry))
             throw new GatewayAuthenticationException("Invalid or missing API key");
-        }
 
+        // Rate-Limiter
         RateLimitResult rateLimitResult = rateLimiter.check("apikey:" + keyId, requestsPerMinute, 60);
         if (!rateLimitResult.isAllowed()) {
             throw new RateLimitException("Too many requests", rateLimitResult.retryAfterSeconds());
         }
-
         response.setHeader("X-RateLimit-Limit", String.valueOf(requestsPerMinute));
         response.setHeader("X-RateLimit-Remaining", String.valueOf(rateLimitResult.remaining()));
 
@@ -86,9 +83,8 @@ public class ApiKeyAuthHandler {
         String cacheKey = SECRET_VERIFY_PREFIX + entry.keyId() + ":" + entry.keySecretHash() + ":" + sha256(rawSecret);
 
         try {
-            if (Boolean.TRUE.equals(stringRedisTemplate.hasKey(cacheKey))) {
+            if (Boolean.TRUE.equals(stringRedisTemplate.hasKey(cacheKey)))
                 return true;
-            }
         } catch (Exception e) {
             log.warn("Secret verification cache read failed, keyId: {}", entry.keyId());
         }
