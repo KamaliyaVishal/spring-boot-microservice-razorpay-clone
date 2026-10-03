@@ -7,7 +7,7 @@ import java.util.UUID;
 
 public interface PaymentService {
 
-    PaymentResponse initiatePayment(UUID merchantId, PaymentInitRequest request);
+    PaymentResponse initiatePayment(UUID merchantId, PaymentInitRequest request, String idempotencyKey);
 
     PaymentResponse capturePayment(UUID merchantId, UUID paymentId);
 

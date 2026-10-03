@@ -21,9 +21,10 @@ public class PaymentController {
     private final MerchantContext merchantContext;
 
     @PostMapping
-    public ResponseEntity<PaymentResponse> initiatePayment(@RequestBody @Valid PaymentInitRequest request) {
+    public ResponseEntity<PaymentResponse> initiatePayment(@RequestBody @Valid PaymentInitRequest request,
+                                                           @RequestHeader(value = "X-Idempotency-Key", required = false) String idempotencyKey) {
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(paymentService.initiatePayment(merchantContext.getMerchantId(), request));
+                .body(paymentService.initiatePayment(merchantContext.getMerchantId(), request, idempotencyKey));
     }
 
     @PostMapping("/{paymentId}/capture")

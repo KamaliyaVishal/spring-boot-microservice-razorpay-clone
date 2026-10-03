@@ -4,7 +4,6 @@ import com.common_lib.enums.EventAggregateType;
 import com.common_lib.enums.OrderStatus;
 import com.common_lib.enums.PaymentEvent;
 import com.common_lib.enums.PaymentStatus;
-import com.common_lib.exception.BusinessRuleViolationException;
 import com.common_lib.exception.ResourceNotFoundException;
 import com.payment_service.dto.request.PaymentInitRequest;
 import com.payment_service.dto.response.PaymentResponse;
@@ -18,6 +17,7 @@ import com.payment_service.payment_gateway.dto.PaymentResult;
 import com.payment_service.payment_transition.PaymentTransitionService;
 import com.payment_service.repository.OrderRepository;
 import com.payment_service.repository.PaymentRepository;
+import com.payment_service.saga.PaymentAuthorizationRecorder;
 import com.payment_service.service.PaymentService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,7 +26,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.Map;
-import java.util.Set;
 import java.util.UUID;
 
 @Service
@@ -41,89 +40,42 @@ public class PaymentServiceImpl implements PaymentService {
     private final GlobalPaymentMapper mapper;
     private final PaymentTransitionService paymentTransitionService;
     private final OutboxEventPublisher outboxEventPublisher;
+    private final PaymentAuthorizationRecorder paymentAuthorizationRecorder;
 
-    @Override
     /**
      * Why do we explicitly write rollbackFor = Exception.class?
      * By default, Spring’s standard @Transactional annotation only rolls back for unchecked exceptions (subclasses of RuntimeException and Error, like NullPointerException or IllegalArgumentException).
      * It will not roll back your database if a checked exception occurs (subclasses of Exception that you are forced to catch or declare, such as IOException, SQLException, or custom business exceptions).
      * By writing rollbackFor = Exception.class, you change this behavior to be 100% bulletproof. It forces Spring to roll back the database for every single type of exception—both checked and unchecked.
      */
+    @Override
     @Transactional(rollbackFor = Exception.class)
-    public PaymentResponse initiatePayment(UUID merchantId, PaymentInitRequest request) {
+    public PaymentResponse initiatePayment(UUID merchantId, PaymentInitRequest request, String idempotencyKey) {
 
-        // Validate the order before payment
-        //OrderRecord order = orderRepository.findByMerchantIdAndId(merchantId, request.orderId())
-        //        .orElseThrow(() -> new ResourceNotFoundException("OrderId", request.orderId()));
-
-
-        // @Lock(LockModeType.PESSIMISTIC_WRITE) : used to block concurrent updates on a specific database record.
-        OrderRecord order = orderRepository.findByMerchantIdAndIdForUpdate(merchantId, request.orderId())
-                .orElseThrow(() -> new ResourceNotFoundException("OrderId", request.orderId()));
-
-        if (!Set.of(OrderStatus.CREATED, OrderStatus.ATTEMPTED).contains(order.getStatus()))
-            throw new BusinessRuleViolationException("Order cannot accept payment in status " + order.getStatus(),
-                    "OrderStatus", order.getStatus());
-
-        // Payment attempt capture in DB
-        order.setStatus(OrderStatus.ATTEMPTED);
-        order.setAttempts(order.getAttempts() + 1);
-
-        Payment payment = Payment.builder()
-                .orderRecord(order)
-                .merchantId(merchantId)
-                .amount(order.getAmount())
-                .status(PaymentStatus.CREATED)
-                .paymentMethod(request.method())
-                .methodDetails(request.methodDetails())
-                .idempotencyKey(UUID.randomUUID().toString())
-                .build();
-
-        paymentRepository.save(payment);
-
-        // Payment initialed
-        PaymentRequest paymentRequest = PaymentRequest.builder()
-                .paymentId(payment.getId())
-                .orderId(order.getId())
-                .merchantId(merchantId)
-                .amount(order.getAmount())
-                .paymentMethod(request.method())
-                .methodDetails(request.methodDetails())
-                .build();
-
-        // Payment states derived from state transitions
-        paymentTransitionService.apply(payment, PaymentEvent.AUTHORIZE_ATTEMPT);
-        PaymentResult paymentResult = paymentGatewayRouter
-                .routeInitiatePaymentStrategy(paymentRequest);
-
-        switch (paymentResult) {
-            case PaymentResult.Pending pending -> payment.setProcessorReference(pending.registrationRef());
-            case PaymentResult.Failure failure -> {
-                // Do not set payment states directly; use the state machine instead to prevent unintended state transitions.
-                payment.setStatus(paymentTransitionService.apply(payment, PaymentEvent.AUTHORIZE_FAIL));
-                payment.setErrorCode(failure.errorCode());
-                payment.setErrorDescription(failure.errorDescription());
-            }
-            case PaymentResult.Success success -> {
-                log.warn("Invalid result state in initiate Payment!");
-                return null;
+        if (idempotencyKey != null) {
+            var existing = paymentAuthorizationRecorder.findExistingAttempt(merchantId, idempotencyKey);
+            if (existing.isPresent()) {
+                log.info("Idempotency replay for paymentId: {}", existing.get().id());
+                return existing.get();
             }
         }
 
-        payment = paymentRepository.save(payment);
-        orderRepository.save(order);
+        Payment payment = paymentAuthorizationRecorder.recordPayment(merchantId, request, idempotencyKey);
 
-        outboxEventPublisher.publish(EventAggregateType.PAYMENT, payment.getId(), "PAYMENT_CREATED",
-                Map.of("orderId", order.getId().toString(),
-                        "paymentId", payment.getId().toString(),
-                        "merchantId", merchantId.toString(),
-                        "paymentStatus", payment.getStatus().name(),
-                        "amountUnits", order.getAmount().getAmountUnits(),
-                        "amountCurrency", order.getAmount().getCurrency(),
-                        "paymentMethod", payment.getMethodDetails()
-                )
-        );
-        return mapper.toPaymentResponse(payment);
+        PaymentRequest paymentRequest = new PaymentRequest(payment.getId(),
+                request.orderId(), merchantId,
+                payment.getAmount(), request.method(),
+                request.methodDetails());
+
+        PaymentResult result;
+        try {
+            result = paymentGatewayRouter.routeInitiatePaymentStrategy(paymentRequest);
+        } catch (Exception e) {
+            return paymentAuthorizationRecorder.compensateAuthorizationFailure(payment.getId(),
+                    "PAYMENT_GATEWAY_ROUTER_UNREACHABLE", e.getMessage());
+        }
+
+        return paymentAuthorizationRecorder.applyGatewayResult(payment.getId(), result);
     }
 
     @Override
@@ -238,30 +190,3 @@ public class PaymentServiceImpl implements PaymentService {
         );
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

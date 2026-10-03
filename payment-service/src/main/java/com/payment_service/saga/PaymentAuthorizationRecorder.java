@@ -39,6 +39,8 @@ public class PaymentAuthorizationRecorder {
 
     @Transactional
     public Payment recordPayment(UUID merchantId, PaymentInitRequest request, String idempotencyKey) {
+
+        // @Lock(LockModeType.PESSIMISTIC_WRITE) : used to block concurrent updates on a specific database record.
         OrderRecord order = orderRepository.findByMerchantIdAndIdForUpdate(request.orderId(), merchantId)
                 .orElseThrow(() -> new ResourceNotFoundException("Order", request.orderId()));
 
@@ -46,9 +48,11 @@ public class PaymentAuthorizationRecorder {
             throw new BusinessRuleViolationException("Order cannot accept payment in status: " + order.getStatus(),
                     "Invalid Order Status", order.getStatus());
 
+        // Payment attempt capture in DB
         order.setStatus(OrderStatus.ATTEMPTED);
         order.setAttempts(order.getAttempts() + 1);
 
+        // Payment initialed
         Payment payment = Payment.builder()
                 .orderRecord(order)
                 .merchantId(merchantId)
@@ -59,6 +63,8 @@ public class PaymentAuthorizationRecorder {
                 .methodDetails(request.methodDetails())
                 .build();
         payment = paymentRepository.save(payment);
+
+        // Payment states derived from state transitions
         paymentTransitionService.apply(payment, PaymentEvent.AUTHORIZE_ATTEMPT);
         return payment;
     }
