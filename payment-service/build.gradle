@@ -41,6 +41,8 @@ dependencies {
 	implementation "org.mapstruct:mapstruct:${mapStructVersion}"
 	implementation("net.javacrumbs.shedlock:shedlock-spring:7.10.1")
 	implementation("net.javacrumbs.shedlock:shedlock-provider-redis-spring:7.10.1")
+	implementation 'org.springframework.cloud:spring-cloud-starter-circuitbreaker-resilience4j'
+	implementation 'org.aspectj:aspectjweaver'
 
     compileOnly 'org.projectlombok:lombok'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
