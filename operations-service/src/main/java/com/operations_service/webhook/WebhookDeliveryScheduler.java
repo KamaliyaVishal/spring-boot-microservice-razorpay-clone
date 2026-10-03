@@ -7,6 +7,7 @@ import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import net.javacrumbs.shedlock.spring.annotation.SchedulerLock;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -42,6 +43,7 @@ public class WebhookDeliveryScheduler {
     }
 
     @Scheduled(fixedDelay = 1000)
+    @SchedulerLock(name = "operations-service-webhook-delivery-poll-and-deliver", lockAtMostFor = "10s", lockAtLeastFor = "1s")
     public void pollAndDeliver() {
         Set<UUID> due = retryQueue.pollDue(batchSize);
 
@@ -55,6 +57,7 @@ public class WebhookDeliveryScheduler {
     }
 
     @Scheduled(fixedDelay = 10000)
+    @SchedulerLock(name = "operations-service-webhook-delivery-reconcile-from-db", lockAtMostFor = "10s", lockAtLeastFor = "1s")
     public void reconcileFromDatabase() {
         LocalDateTime now = LocalDateTime.now();
         List<WebhookEvent> due = webhookEventRepository
@@ -66,25 +69,3 @@ public class WebhookDeliveryScheduler {
     }
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
