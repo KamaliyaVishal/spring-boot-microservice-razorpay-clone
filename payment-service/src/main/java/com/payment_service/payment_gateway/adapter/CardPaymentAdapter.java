@@ -6,6 +6,8 @@ import com.payment_service.payment_gateway.PaymentAdapter;
 import com.payment_service.payment_gateway.dto.PaymentRequest;
 import com.payment_service.payment_gateway.dto.PaymentResult;
 import com.payment_service.payment_processor.dto.PaymentProcessorResponse;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.github.resilience4j.retry.annotation.Retry;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -20,6 +22,8 @@ public class CardPaymentAdapter implements PaymentAdapter {
     private final VaultServiceClient vaultServiceClient;
 
     @Override
+    @CircuitBreaker(name = "vault-service")
+    @Retry(name = "vault-service")
     public PaymentResult initiatePayment(PaymentRequest request) {
 
         String token = request.methodDetails().get("token").toString();

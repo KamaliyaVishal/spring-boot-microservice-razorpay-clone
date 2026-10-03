@@ -16,6 +16,8 @@ import com.payment_service.outbox.OutboxEventPublisher;
 import com.payment_service.repository.OrderRepository;
 import com.payment_service.repository.PaymentRepository;
 import com.payment_service.service.OrderService;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.github.resilience4j.retry.annotation.Retry;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -42,6 +44,8 @@ public class OrderServiceImpl implements OrderService {
     private int defaultOrderExpiryMinutes;
 
     @Override
+    @CircuitBreaker(name = "merchant-service")
+    @Retry(name = "merchant-service")
     @Transactional(rollbackFor = Exception.class)
     public OrderResponse createOrder(UUID merchantId, CreateOrderRequest request) {
 
