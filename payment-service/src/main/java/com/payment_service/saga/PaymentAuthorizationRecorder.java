@@ -40,6 +40,9 @@ public class PaymentAuthorizationRecorder {
     @Transactional
     public Payment recordPayment(UUID merchantId, PaymentInitRequest request, String idempotencyKey) {
 
+        // OrderRecord order = orderRepository.findByMerchantIdAndId(request.orderId(), merchantId)
+        //          .orElseThrow(() -> new ResourceNotFoundException("Order", request.orderId()));
+
         // @Lock(LockModeType.PESSIMISTIC_WRITE) : used to block concurrent updates on a specific database record.
         OrderRecord order = orderRepository.findByMerchantIdAndIdForUpdate(request.orderId(), merchantId)
                 .orElseThrow(() -> new ResourceNotFoundException("Order", request.orderId()));

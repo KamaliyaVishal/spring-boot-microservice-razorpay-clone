@@ -74,7 +74,6 @@ public class PaymentServiceImpl implements PaymentService {
             return paymentAuthorizationRecorder.compensateAuthorizationFailure(payment.getId(),
                     "PAYMENT_GATEWAY_ROUTER_UNREACHABLE", e.getMessage());
         }
-
         return paymentAuthorizationRecorder.applyGatewayResult(payment.getId(), result);
     }
 
