@@ -2,7 +2,7 @@ package com.payment_service.payment_transition;
 
 import com.common_lib.enums.PaymentEvent;
 import com.common_lib.enums.PaymentStatus;
-import com.common_lib.exception.BusinessRuleViolationException;
+import com.common_lib.exception.InvalidStateTransitionException;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;
@@ -36,7 +36,7 @@ public class PaymentStateMachine {
     public PaymentStatus transition(PaymentStatus current, PaymentEvent event) {
         PaymentStatus next = TRANSITION.get(new Transition(current, event));
         if (next == null)
-            throw new BusinessRuleViolationException("Invalid state transition", current.name(), event.name());
+            throw new InvalidStateTransitionException("Invalid state transition", current.name(), event.name());
         return next;
     }
 

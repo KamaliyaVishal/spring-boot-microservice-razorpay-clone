@@ -6,7 +6,8 @@ public enum ErrorCode {
     RESOURCE_NOT_FOUND(HttpStatus.NOT_FOUND, "The requested resource could not be located."),
     BAD_REQUEST_PARAMETER(HttpStatus.BAD_REQUEST, "The provided request parameters are invalid or breached constraints."),
     DUPLICATE_RESOURCE(HttpStatus.CONFLICT, "A resource with the same identifier already exists in the system."),
-    INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "An unexpected system error occurred on our end.");
+    INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "An unexpected system error occurred on our end."),
+    INVALID_TRANSITION_STATE(HttpStatus.NOT_ACCEPTABLE, "Provided target state not valid as per the transition machine.");
 
     private final HttpStatus httpStatus;
     private final String defaultDescription;
