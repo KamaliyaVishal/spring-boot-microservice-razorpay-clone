@@ -71,7 +71,7 @@ public class ApiKeyServiceImpl implements ApiKeyService {
 
         apiKeyRepository.save(apiKey);
 
-        return mapper.toCreateApiKeyResponse(apiKey);
+        return new CreateApiKeyResponse(apiKey.getId(), keyId, rawSecret, request.environment());
     }
 
     @Override
