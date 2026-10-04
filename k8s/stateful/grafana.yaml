@@ -57,7 +57,7 @@ data:
           "targets": [
             {
               "datasource": { "type": "prometheus", "uid": "Prometheus" },
-              "expr": "process_cpu_usage{job=~\"api-gateway-service|merchant-service|payment-service|operations-service|vault-service\"} * 100",
+              "expr": "process_cpu_usage{job=~\"api-gateway|merchant-service|payment-service|operations-service|vault-service\"} * 100",
               "legendFormat": "{{job}}",
               "refId": "A"
             }
@@ -76,7 +76,7 @@ data:
           "targets": [
             {
               "datasource": { "type": "prometheus", "uid": "Prometheus" },
-              "expr": "sum by (job) (jvm_memory_used_bytes{job=~\"api-gateway-service|merchant-service|payment-service|operations-service|vault-service\"})",
+              "expr": "sum by (job) (jvm_memory_used_bytes{job=~\"api-gateway|merchant-service|payment-service|operations-service|vault-service\"})",
               "legendFormat": "{{job}}",
               "refId": "A"
             }

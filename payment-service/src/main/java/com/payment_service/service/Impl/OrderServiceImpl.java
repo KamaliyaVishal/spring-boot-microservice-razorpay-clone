@@ -21,9 +21,9 @@ import io.github.resilience4j.retry.annotation.Retry;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -39,14 +39,19 @@ public class OrderServiceImpl implements OrderService {
     private final GlobalPaymentMapper mapper;
     private final OutboxEventPublisher outboxEventPublisher;
     private final CustomerServiceClient customerServiceClient;
+    private final OrderPersistenceService orderPersistenceService;
 
     @Value("${payment.order.default-order-expiry-minutes:30}")
     private int defaultOrderExpiryMinutes;
 
+    /**
+     * Suspends transactions(because we have @Transactional(readOnly = true) on class) for non-DB tasks in create() and applies them only to persist(),
+     * reducing connection hold time and latency under 10k RPS load.
+     */
     @Override
     @CircuitBreaker(name = "merchant-service")
     @Retry(name = "merchant-service")
-    @Transactional(rollbackFor = Exception.class)
+    @Transactional(propagation = Propagation.NOT_SUPPORTED, rollbackFor = Exception.class)
     public OrderResponse createOrder(UUID merchantId, CreateOrderRequest request) {
 
         if (request.receipt() != null && orderRepository.existsByMerchantIdAndReceipt(merchantId, request.receipt()))
@@ -62,29 +67,7 @@ public class OrderServiceImpl implements OrderService {
             );
         }
 
-        OrderRecord order = OrderRecord.builder()
-                .receipt(request.receipt())
-                .amount(request.amount())
-                .notes(request.notes())
-                .merchantId(merchantId)
-                .customerId(customerId)
-                .status(OrderStatus.CREATED)
-                .expiredAt(request.expiresAt() != null
-                        ? request.expiresAt()
-                        : LocalDateTime.now().plusMinutes(defaultOrderExpiryMinutes))
-                .build();
-        order = orderRepository.save(order);
-
-        outboxEventPublisher.publish(EventAggregateType.ORDER, order.getId(), "ORDER_CREATED",
-                Map.of("orderId", order.getId().toString(),
-                        "merchantId", merchantId.toString(),
-                        "orderStatus", order.getStatus().name(),
-                        "amountUnits", order.getAmount().getAmountUnits(),
-                        "amountCurrency", order.getAmount().getCurrency()
-                )
-        );
-
-        return mapper.toOrderResponse(order);
+        return orderPersistenceService.persist(merchantId, request, customerId, defaultOrderExpiryMinutes);
     }
 
     private OrderRecord findOrderById(UUID merchantId, UUID orderId) {

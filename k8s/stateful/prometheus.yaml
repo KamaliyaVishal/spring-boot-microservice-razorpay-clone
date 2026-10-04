@@ -9,7 +9,7 @@ data:
       scrape_interval: 5s
 
     scrape_configs:
-      - job_name: api-gateway-service
+      - job_name: api-gateway
         metrics_path: /actuator/prometheus
         static_configs:
           - targets: ["api-gateway:80"]

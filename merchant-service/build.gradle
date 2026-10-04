@@ -2,6 +2,7 @@ plugins {
 	id 'java'
 	id 'org.springframework.boot' version '4.1.1'
 	id 'io.spring.dependency-management' version '1.1.7'
+	id 'com.google.cloud.tools.jib' version '3.5.4'
 }
 
 group = 'com'
@@ -37,8 +38,9 @@ dependencies {
 	implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
 	implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
     implementation "org.mapstruct:mapstruct:${mapStructVersion}"
+	implementation 'io.github.openfeign:feign-hc5'
 
-    compileOnly 'org.projectlombok:lombok'
+	compileOnly 'org.projectlombok:lombok'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	runtimeOnly 'org.postgresql:postgresql'
 	annotationProcessor 'org.projectlombok:lombok'
@@ -61,6 +63,19 @@ dependencyManagement {
 	}
 }
 
+jib {
+	to {
+		// Automatically references the project name and version
+		image = "docker.io/vishalkamaliya/razorpay-${project.name}:${project.version}"
+		tags = ['latest']
+	}
+}
+
 tasks.named('test') {
 	useJUnitPlatform()
+}
+
+// Replicates the Maven <phase>package</phase> execution by binding Jib to the "build" task
+tasks.named('build') {
+	dependsOn tasks.named('jib')
 }
