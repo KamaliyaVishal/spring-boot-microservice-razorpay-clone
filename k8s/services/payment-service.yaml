@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: payment-service
-          image: anuj55149/razorpay-payment-service:latest
+          image: vishalkamaliya/razorpay-payment-service:latest
           imagePullPolicy: Always
           ports:
             - containerPort: 9020

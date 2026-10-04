@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: vault-service
-          image: anuj55149/razorpay-vault-service:latest
+          image: vishalkamaliya/razorpay-vault-service:latest
           imagePullPolicy: Always
           ports:
             - containerPort: 9040

@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: api-gateway
-          image: anuj55149/razorpay-api-gateway:latest
+          image: vishalkamaliya/razorpay-api-gateway:latest
           imagePullPolicy: Always
           ports:
             - containerPort: 8080

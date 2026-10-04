@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: merchant-service
-          image: anuj55149/razorpay-merchant-service:latest
+          image: vishalkamaliya/razorpay-merchant-service:latest
           imagePullPolicy: Always
           ports:
             - containerPort: 9010
