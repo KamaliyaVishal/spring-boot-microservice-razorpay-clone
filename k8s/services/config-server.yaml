@@ -1,21 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: config-service
+  name: config-server
   namespace: razorpay-core
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: config-service
+      app: config-server
   template:
     metadata:
       labels:
-        app: config-service
+        app: config-server
     spec:
       containers:
-        - name: config-service
-          image: vishalkamaliya/razorpay-config-service:latest
+        - name: config-server
+          image: vishalkamaliya/razorpay-config-server:latest
           imagePullPolicy: Always
           ports:
             - containerPort: 8888
@@ -58,11 +58,11 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: config-service
+  name: config-server
   namespace: razorpay-core
 spec:
   selector:
-    app: config-service
+    app: config-server
   ports:
     - port: 8888
       targetPort: 8888

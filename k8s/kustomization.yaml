@@ -10,7 +10,7 @@ resources:
   - stateful/zipkin.yaml
   - stateful/prometheus.yaml
   - stateful/grafana.yaml
-  - services/config-service.yaml
+  - services/config-server.yaml
   - services/api-gateway.yaml
   - services/merchant-service.yaml
   - services/payment-service.yaml
