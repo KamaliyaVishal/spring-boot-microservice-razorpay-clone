@@ -20,7 +20,7 @@ Order creation · Payment authorization · Bank callback simulation · Settlemen
 1. [Project Overview](#-project-overview)
 2. [Project Architecture Overview](#-project-architecture-overview)
 3. [Payment Methods Flow](#-payment-methods-flow)
-4. [Data Model](#-data-model-er-diagram)
+4. [Data Model](#-data-model)
 5. [Design Patterns Involved](#-design-patterns-involved)
 6. [Optimisations and Bug Fixes](#-optimisations-and-bug-fixes)
 7. [Load Testing with JMeter](#-load-testing-with-jmeter)
