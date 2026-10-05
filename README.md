@@ -227,7 +227,12 @@ Every item below was found using the observability stack (Grafana dashboards + Z
 
 ## 📈 Load Testing with JMeter
 
+To ensure the microservice architecture can handle production-level traffic safely, comprehensive stress testing was executed using Apache JMeter. 
 
+You can review the full, interactive performance metrics, including request summaries, throughput rates, and error logs, directly in the [JMeter Performance Report][jmeter-report].
+
+<!-- Reference links at the bottom of your file -->
+[jmeter-report]: https://github.com/KamaliyaVishal/spring-boot-microservice-razorpay-clone/blob/main/load-testing/report/index.html "Apache JMeter Dashboard Performance Report"
 
 ---
 
