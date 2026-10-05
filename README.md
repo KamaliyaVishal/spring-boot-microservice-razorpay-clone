@@ -65,7 +65,9 @@ Built with **Java 25** and **Spring Boot 4.1.1** across **7 microservices**, bac
 
 ### High-level system design
 
-![High-level system design](docs/images/high-level-system-design.png)
+
+<img width="1338" height="784" alt="High-level-system-design" src="https://github.com/user-attachments/assets/448fc92e-31af-48ae-be28-f7919eca1731" />
+
 
 Clients reach the platform through the **API Gateway**: the checkout SDK and analytics dashboard use JWT, while merchant backends use server-to-server **API key** auth. Business services (`merchant`, `payment`, `operations`, `vault`) sit behind the gateway in a private subnet, share Redis for cache and counters, exchange events over Kafka via the outbox, and each own their own database (`merchant-db`, `payment-db`, `operations-db`, `vault-db`).
 
