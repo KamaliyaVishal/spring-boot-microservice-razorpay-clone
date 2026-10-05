@@ -1,4 +1,4 @@
-<div align="center">
+[index.html](https://github.com/user-attachments/files/33063472/index.html)<div align="center">
 
 # 💳 Razorpay Clone — Distributed Payment Platform
 
@@ -22,12 +22,11 @@ Order creation · Payment authorization · Bank callback simulation · Settlemen
 1. [Project Overview](#-project-overview)
 2. [Project Architecture Overview](#-project-architecture-overview)
 3. [Payment Methods Flow](#-payment-methods-flow)
-4. [Data Model (ER Diagram)](#-data-model-er-diagram)
+4. [Data Model](#-data-model-er-diagram)
 5. [Design Patterns Involved](#-design-patterns-involved)
 6. [Optimisations and Bug Fixes](#-optimisations-and-bug-fixes)
 7. [Load Testing with JMeter](#-load-testing-with-jmeter)
 8. [Deploying on Kubernetes](#-deploying-on-kubernetes)
-9. [Getting Started (Local)](#-getting-started-local)
 
 ---
 
@@ -65,7 +64,9 @@ Built with **Java 25** and **Spring Boot 4.1.1** across **7 microservices**, bac
 
 ### High-level system design
 
-![High-level system design](docs/images/high-level-system-design.png)
+
+<img width="1338" height="784" alt="High-level-system-design" src="https://github.com/user-attachments/assets/448fc92e-31af-48ae-be28-f7919eca1731" />
+
 
 Clients reach the platform through the **API Gateway**: the checkout SDK and analytics dashboard use JWT, while merchant backends use server-to-server **API key** auth. Business services (`merchant`, `payment`, `operations`, `vault`) sit behind the gateway in a private subnet, share Redis for cache and counters, exchange events over Kafka via the outbox, and each own their own database (`merchant-db`, `payment-db`, `operations-db`, `vault-db`).
 
@@ -138,43 +139,14 @@ stateDiagram-v2
 
 Every transition is recorded in `PAYMENT_TRANSITION_LOG` (from/to status, event type, actor, reason), so the full history of a payment can be audited.
 
-### Kubernetes topology
-
-```mermaid
-flowchart TB
-    ING[Ingress / LoadBalancer] --> GWD
-
-    subgraph NS["Namespace: payments"]
-        GWD[Deployment: api-gateway]
-        PAYD[Deployment: payment-service]
-        MERD[Deployment: merchant-service]
-        OPSD[Deployment: operations-service]
-        VAD[Deployment: vault-service]
-        CFGD[Deployment: config-service]
-        DISCD[Deployment: discovery-service]
-
-        PGS[(StatefulSet: Postgres + PVC)]
-        RDS[(StatefulSet: Redis)]
-        KFS{{StatefulSet: Kafka}}
-
-        CM[ConfigMaps]
-        SEC[Secrets]
-    end
-
-    GWD & PAYD & MERD & OPSD & VAD --> CM
-    GWD & PAYD & MERD & OPSD & VAD --> SEC
-    PAYD & MERD & OPSD & VAD --> PGS
-    GWD & PAYD --> RDS
-    PAYD & OPSD --> KFS
-```
-
 ---
 
 ## 💸 Payment Methods Flow
 
 End-to-end sequence diagrams for the four supported payment methods: **Card**, **UPI**, **Net Banking** and **Wallet**.
 
-![Payment methods flow](docs/images/payment-methods-flow.webp)
+<img width="7555" height="5130" alt="payment_methods_flow" src="https://github.com/user-attachments/assets/4e6e9061-7fe7-4c15-9e12-389f12440a99" />
+
 
 | Method | How it works | Notable detail |
 |---|---|---|
@@ -187,9 +159,7 @@ In every flow, the merchant is notified by an **HMAC-signed `payment.captured` w
 
 ---
 
-## 🗄 Data Model (ER Diagram)
-
-![Razorpay ER diagram](docs/images/razorpay-er-diagram.webp)
+## 🗄 Data Model
 
 Each service owns its own database. The logical grouping of tables is:
 
@@ -257,42 +227,7 @@ Every item below was found using the observability stack (Grafana dashboards + Z
 
 ## 📈 Load Testing with JMeter
 
-Load tests were run with **Apache JMeter**, with Prometheus/Grafana and Zipkin watched live to locate bottlenecks, fix them, and re-run.
 
-```mermaid
-flowchart LR
-    JM[JMeter<br/>Thread Groups] -->|HTTP| GW[api-gateway]
-    GW --> SVC[Services]
-    SVC -.metrics.-> PROM[Prometheus]
-    PROM --> GRAF[Grafana Dashboard]
-    SVC -.traces.-> ZIP[Zipkin]
-    GRAF --> ANA[Find bottleneck → fix → re-run]
-    ZIP --> ANA
-```
-
-### Test run
-
-| Item | Value |
-|---|---|
-| Tool | Apache JMeter (HTML dashboard report) |
-| Results file | `results.jtl` |
-| Start time | 9/12/26, 11:13 PM |
-| End time | 9/12/26, 11:15 PM |
-
-### Full report
-
-The complete JMeter dashboard (APDEX, request summary, statistics, errors, and over-time, throughput and response-time charts) is in [`docs/load-test/`](docs/load-test/index.html). Open it from the generated report folder (the one that contains `content/` and `sbadmin2-1.0.7/`) in a browser to see the charts.
-
-### Running
-
-```bash
-# Headless run
-jmeter -n -t jmeter/payment-flow.jmx \
-       -Jhost=<GATEWAY_HOST> -Jthreads=200 -Jrampup=60 -Jduration=600 \
-       -l results.jtl -e -o report
-
-# Open report/index.html
-```
 
 ---
 
@@ -324,48 +259,6 @@ kubectl -n payments get pods -w
 kubectl -n payments autoscale deploy api-gateway     --cpu-percent=60 --min=2 --max=10
 kubectl -n payments autoscale deploy payment-service --cpu-percent=60 --min=2 --max=10
 ```
-
----
-
-## ⚙️ Getting Started (Local)
-
-### Prerequisites
-
-Java 25, Maven, Docker, `kubectl`, and a local cluster (Minikube / kind / Docker Desktop).
-
-```bash
-git clone https://github.com/KamaliyaVishal/spring-boot-microservice-razorpay-clone.git
-cd spring-boot-microservice-razorpay-clone
-
-# Build all services
-mvn clean package -DskipTests
-
-# Build images (adjust to your Dockerfile / Jib setup)
-docker build -t <registry>/payment-service ./payment-service
-# ...repeat per service
-
-# Deploy
-kubectl apply -f k8s/
-kubectl get pods -n payments
-```
-
-### Example call
-
-```bash
-curl -X POST http://<GATEWAY>/api/v1/payments/orders \
-  -H "Authorization: Bearer <API_KEY>" \
-  -H "X-Idempotency-Key: $(uuidgen)" \
-  -H "Content-Type: application/json" \
-  -d '{"amount": 49900, "currency": "INR", "receipt": "rcpt_001"}'
-```
-
-### Observability
-
-| Tool | Purpose |
-|---|---|
-| Grafana | Per-service CPU/memory, latency, throughput |
-| Prometheus | Raw metrics and queries |
-| Zipkin | Distributed traces |
 
 ---
 
