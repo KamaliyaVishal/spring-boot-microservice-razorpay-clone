@@ -145,7 +145,8 @@ Every transition is recorded in `PAYMENT_TRANSITION_LOG` (from/to status, event 
 
 End-to-end sequence diagrams for the four supported payment methods: **Card**, **UPI**, **Net Banking** and **Wallet**.
 
-![Payment methods flow](docs/images/payment-methods-flow.webp)
+<img width="7555" height="5130" alt="payment_methods_flow" src="https://github.com/user-attachments/assets/4e6e9061-7fe7-4c15-9e12-389f12440a99" />
+
 
 | Method | How it works | Notable detail |
 |---|---|---|
@@ -159,8 +160,6 @@ In every flow, the merchant is notified by an **HMAC-signed `payment.captured` w
 ---
 
 ## 🗄 Data Model (ER Diagram)
-
-![Razorpay ER diagram](docs/images/razorpay-er-diagram.webp)
 
 Each service owns its own database. The logical grouping of tables is:
 
