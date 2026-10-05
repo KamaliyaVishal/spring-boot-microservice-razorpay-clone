@@ -27,7 +27,6 @@ Order creation · Payment authorization · Bank callback simulation · Settlemen
 6. [Optimisations and Bug Fixes](#-optimisations-and-bug-fixes)
 7. [Load Testing with JMeter](#-load-testing-with-jmeter)
 8. [Deploying on Kubernetes](#-deploying-on-kubernetes)
-9. [Getting Started (Local)](#-getting-started-local)
 
 ---
 
@@ -229,42 +228,7 @@ Every item below was found using the observability stack (Grafana dashboards + Z
 
 ## 📈 Load Testing with JMeter
 
-Load tests were run with **Apache JMeter**, with Prometheus/Grafana and Zipkin watched live to locate bottlenecks, fix them, and re-run.
 
-```mermaid
-flowchart LR
-    JM[JMeter<br/>Thread Groups] -->|HTTP| GW[api-gateway]
-    GW --> SVC[Services]
-    SVC -.metrics.-> PROM[Prometheus]
-    PROM --> GRAF[Grafana Dashboard]
-    SVC -.traces.-> ZIP[Zipkin]
-    GRAF --> ANA[Find bottleneck → fix → re-run]
-    ZIP --> ANA
-```
-
-### Test run
-
-| Item | Value |
-|---|---|
-| Tool | Apache JMeter (HTML dashboard report) |
-| Results file | `results.jtl` |
-| Start time | 9/12/26, 11:13 PM |
-| End time | 9/12/26, 11:15 PM |
-
-### Full report
-
-The complete JMeter dashboard (APDEX, request summary, statistics, errors, and over-time, throughput and response-time charts) is in [`docs/load-test/`](docs/load-test/index.html). Open it from the generated report folder (the one that contains `content/` and `sbadmin2-1.0.7/`) in a browser to see the charts.
-
-### Running
-
-```bash
-# Headless run
-jmeter -n -t jmeter/payment-flow.jmx \
-       -Jhost=<GATEWAY_HOST> -Jthreads=200 -Jrampup=60 -Jduration=600 \
-       -l results.jtl -e -o report
-
-# Open report/index.html
-```
 
 ---
 
@@ -296,48 +260,6 @@ kubectl -n payments get pods -w
 kubectl -n payments autoscale deploy api-gateway     --cpu-percent=60 --min=2 --max=10
 kubectl -n payments autoscale deploy payment-service --cpu-percent=60 --min=2 --max=10
 ```
-
----
-
-## ⚙️ Getting Started (Local)
-
-### Prerequisites
-
-Java 25, Maven, Docker, `kubectl`, and a local cluster (Minikube / kind / Docker Desktop).
-
-```bash
-git clone https://github.com/KamaliyaVishal/spring-boot-microservice-razorpay-clone.git
-cd spring-boot-microservice-razorpay-clone
-
-# Build all services
-mvn clean package -DskipTests
-
-# Build images (adjust to your Dockerfile / Jib setup)
-docker build -t <registry>/payment-service ./payment-service
-# ...repeat per service
-
-# Deploy
-kubectl apply -f k8s/
-kubectl get pods -n payments
-```
-
-### Example call
-
-```bash
-curl -X POST http://<GATEWAY>/api/v1/payments/orders \
-  -H "Authorization: Bearer <API_KEY>" \
-  -H "X-Idempotency-Key: $(uuidgen)" \
-  -H "Content-Type: application/json" \
-  -d '{"amount": 49900, "currency": "INR", "receipt": "rcpt_001"}'
-```
-
-### Observability
-
-| Tool | Purpose |
-|---|---|
-| Grafana | Per-service CPU/memory, latency, throughput |
-| Prometheus | Raw metrics and queries |
-| Zipkin | Distributed traces |
 
 ---
 
