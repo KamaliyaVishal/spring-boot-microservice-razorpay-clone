@@ -1,3 +1,5 @@
+<div align="center">
+
 # 💳 Razorpay Clone — Distributed Payment Platform
 
 **A Kubernetes-native, event-driven payment gateway built with Spring Boot microservices.**
@@ -24,7 +26,8 @@ Order creation · Payment authorization · Bank callback simulation · Settlemen
 5. [Design Patterns Involved](#-design-patterns-involved)
 6. [Optimisations and Bug Fixes](#-optimisations-and-bug-fixes)
 7. [Load Testing with JMeter](#-load-testing-with-jmeter)
-8. [Deploying on Kubernetes](#-deploying-on-kubernetes)
+8. [Distributed Configuration (GitHub Config Repo)](#distributed-configuration)
+9. [Deploying on Kubernetes](#deploying-on-kubernetes)
 
 ---
 
@@ -57,7 +60,7 @@ Built with **Java 25** and **Spring Boot 4.1.1** across **7 microservices**, bac
 | `merchant-service` | Merchant accounts, API keys, customers, webhooks |
 | `operations-service` | Settlements, webhook delivery, outbox relay |
 | `vault-service` | Card tokenization, encryption |
-| `config-service` | Centralized config (Spring Cloud Config, git-backed) |
+| `config-server` | Centralized config (Spring Cloud Config, git-backed, see [config repo](https://github.com/KamaliyaVishal/distributed-razorpay-clone-config)) |
 | `discovery-service` | Service registry |
 
 ### High-level system design
@@ -231,24 +234,117 @@ To ensure the microservice architecture can handle production-level traffic safe
 
 ---
 
+<a id="distributed-configuration"></a>
+## 🔧 Distributed Configuration (GitHub Config Repo)
+
+All service configuration is externalised and served by **Spring Cloud Config Server** (`config-server`), backed by a dedicated Git repository:
+
+👉 **[distributed-razorpay-clone-config](https://github.com/KamaliyaVishal/distributed-razorpay-clone-config)**
+
+Each microservice keeps only a minimal bootstrap config, pulls the rest from the config server at startup, and the config server reads it from GitHub.
+
+```
+GitHub config repo ──▶ config-server ──▶ api-gateway / merchant / payment / operations / vault
+```
+
+### Config repo layout
+
+| File | Applies to |
+|---|---|
+| `application.yaml` | Shared defaults for **every** service |
+| `api-gateway.yaml` | `api-gateway` only |
+| `merchant-service.yaml` | `merchant-service` only |
+| `payment-service.yaml` | `payment-service` only |
+| `operations-service.yaml` | `operations-service` only |
+| `vault-service.yaml` | `vault-service` only |
+
+Service-specific files override the shared `application.yaml`.
+
+### Why a Git-backed config repo?
+
+- **Single source of truth**: configuration for all services lives in one place, not baked into images.
+- **Change without rebuilding**: update a property, push to Git, and restart the service. No new Docker image needed.
+- **Versioned and auditable**: every config change is a Git commit that can be reviewed and rolled back.
+- **Environment-friendly**: the same images run on any cluster; only the config repo changes.
+
+> Because every service fetches its config at startup, **`config-server` must be up and healthy before the other services** (see the deployment steps below).
+
+---
+
+<a id="deploying-on-kubernetes"></a>
 ## ☸️ Deploying on Kubernetes
 
-The services and data stores run as standard Kubernetes manifests, so the same workflow works on any cluster (local, EKS, GKE, AKS).
+The services run as standard Kubernetes manifests. For local development this project uses **[kind](https://kind.sigs.k8s.io/)** (Kubernetes IN Docker), which runs cluster nodes as Docker containers instead of heavy virtual machines, saving CPU and RAM.
 
-### Deploy
+### Step 1: Build and publish the Docker images
+
+Build an image for each service and push it to your Docker Hub registry:
+
+- `config-server`
+- `api-gateway`
+- `merchant-service`
+- `operations-service`
+- `payment-service`
+- `vault-service`
 
 ```bash
-# 1. Namespace, config and secrets
-kubectl apply -f k8s/namespace.yaml
-kubectl apply -f k8s/config/ -f k8s/secrets/
+# repeat for each service
+docker build -t <your-dockerhub-username>/<service-name>:latest .
+docker push <your-dockerhub-username>/<service-name>:latest
+```
 
-# 2. Data stores first, then platform services, then apps
-kubectl apply -f k8s/data/        # postgres, redis, kafka
-kubectl apply -f k8s/platform/    # config-service, discovery-service
-kubectl apply -f k8s/apps/        # gateway, payment, merchant, operations, vault
-kubectl apply -f k8s/observability/
+Make sure the image names in the Kubernetes manifests match your Docker Hub repositories.
 
-# 3. Scale and verify
+### Step 2: Create the kind cluster
+
+```bash
+kind create cluster --config kind-config.yaml
+```
+
+### Step 3: Deploy with Kustomize (two phases)
+
+The services fetch their configuration from `config-server` on startup, so they must be deployed **after** the config server is up and running. `kustomization.yaml` is therefore applied in two phases.
+
+**Phase 1: infrastructure and config server only**
+
+In `kustomization.yaml`, comment out the application services:
+
+```yaml
+resources:
+  # ... data stores, config-server, etc. stay enabled ...
+  # - services/api-gateway.yaml
+  # - services/merchant-service.yaml
+  # - services/payment-service.yaml
+  # - services/operations-service.yaml
+  # - services/vault-service.yaml
+```
+
+```bash
+kubectl apply -k .
+kubectl get pods -w     # wait until config-server is Running / Ready
+```
+
+**Phase 2: application services**
+
+Once `config-server` is healthy, uncomment the five services and apply again:
+
+```yaml
+resources:
+  - services/api-gateway.yaml
+  - services/merchant-service.yaml
+  - services/payment-service.yaml
+  - services/operations-service.yaml
+  - services/vault-service.yaml
+```
+
+```bash
+kubectl apply -k .
+kubectl get pods -w
+```
+
+### Scale and verify
+
+```bash
 kubectl -n payments scale deploy/payment-service --replicas=4
 kubectl -n payments get pods -w
 ```
