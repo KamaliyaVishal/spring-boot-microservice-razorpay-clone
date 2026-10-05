@@ -140,36 +140,6 @@ stateDiagram-v2
 
 Every transition is recorded in `PAYMENT_TRANSITION_LOG` (from/to status, event type, actor, reason), so the full history of a payment can be audited.
 
-### Kubernetes topology
-
-```mermaid
-flowchart TB
-    ING[Ingress / LoadBalancer] --> GWD
-
-    subgraph NS["Namespace: payments"]
-        GWD[Deployment: api-gateway]
-        PAYD[Deployment: payment-service]
-        MERD[Deployment: merchant-service]
-        OPSD[Deployment: operations-service]
-        VAD[Deployment: vault-service]
-        CFGD[Deployment: config-service]
-        DISCD[Deployment: discovery-service]
-
-        PGS[(StatefulSet: Postgres + PVC)]
-        RDS[(StatefulSet: Redis)]
-        KFS{{StatefulSet: Kafka}}
-
-        CM[ConfigMaps]
-        SEC[Secrets]
-    end
-
-    GWD & PAYD & MERD & OPSD & VAD --> CM
-    GWD & PAYD & MERD & OPSD & VAD --> SEC
-    PAYD & MERD & OPSD & VAD --> PGS
-    GWD & PAYD --> RDS
-    PAYD & OPSD --> KFS
-```
-
 ---
 
 ## 💸 Payment Methods Flow
