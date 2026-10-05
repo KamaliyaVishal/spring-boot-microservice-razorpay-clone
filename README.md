@@ -22,7 +22,7 @@ Order creation · Payment authorization · Bank callback simulation · Settlemen
 1. [Project Overview](#-project-overview)
 2. [Project Architecture Overview](#-project-architecture-overview)
 3. [Payment Methods Flow](#-payment-methods-flow)
-4. [Data Model (ER Diagram)](#-data-model-er-diagram)
+4. [Data Model](#-data-model-er-diagram)
 5. [Design Patterns Involved](#-design-patterns-involved)
 6. [Optimisations and Bug Fixes](#-optimisations-and-bug-fixes)
 7. [Load Testing with JMeter](#-load-testing-with-jmeter)
@@ -159,7 +159,7 @@ In every flow, the merchant is notified by an **HMAC-signed `payment.captured` w
 
 ---
 
-## 🗄 Data Model (ER Diagram)
+## 🗄 Data Model
 
 Each service owns its own database. The logical grouping of tables is:
 
